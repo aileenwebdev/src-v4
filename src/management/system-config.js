@@ -33,13 +33,13 @@ export function renderSystemConfigScreen() {
         <button class="btn btn-p btn-sm" onclick="saveConfigSection('facilities')">Save Facilities</button>
       </div>
 
-      <!-- GHL Workflow IDs -->
+      <!-- Automation Workflow IDs -->
       <div class="panel" style="margin-bottom:20px;padding:20px 20px 24px">
-        <div class="panel-hd" style="padding:0 0 14px"><h3>GHL Workflow IDs</h3></div>
+        <div class="panel-hd" style="padding:0 0 14px"><h3>Automation Workflow IDs</h3></div>
         ${[['bookingConfirmed','Booking Confirmed'],['guestPassIssued','Guest Pass Issued'],['memberFlagged','Member Flagged']].map(([k, label]) => `
           <div class="form-group">
             <label class="form-label">${label}</label>
-            <input id="cfg-wf-${k}" class="form-input" placeholder="GHL workflow ID…">
+            <input id="cfg-wf-${k}" class="form-input" placeholder="Workflow ID…">
           </div>`).join('')}
         <button class="btn btn-p btn-sm" onclick="saveConfigSection('workflowIds')">Save Workflows</button>
       </div>

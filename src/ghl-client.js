@@ -1,5 +1,5 @@
-// src/ghl-client.js — Centralised GHL API wrapper (server-side only)
-// All new API handlers import from here. Existing handlers are untouched.
+// src/ghl-client.js — Centralised GHL API wrapper (server-side only, CJS)
+'use strict';
 
 const BASE    = 'https://services.leadconnectorhq.com';
 const VERSION = '2021-07-28';
@@ -23,13 +23,13 @@ async function ghlFetch(path, opts = {}) {
   });
   const text = await res.text();
   if (!res.ok) {
-    const err = Object.assign(new Error(`GHL ${res.status}: ${text}`), { status: res.status });
+    const err = Object.assign(new Error(`${res.status}: ${text}`), { status: res.status });
     throw err;
   }
   return text ? JSON.parse(text) : {};
 }
 
-export const GHL = {
+const GHL = {
   searchContacts(query, limit = 20) {
     return ghlFetch(
       `/contacts/?locationId=${locationId()}&query=${encodeURIComponent(query)}&limit=${limit}`
@@ -68,4 +68,14 @@ export const GHL = {
       body:   '{}',
     });
   },
+
+  listConversations(limit = 50) {
+    return ghlFetch(`/conversations/search?locationId=${locationId()}&limit=${limit}`);
+  },
+
+  getMessages(conversationId) {
+    return ghlFetch(`/conversations/${conversationId}/messages`);
+  },
 };
+
+module.exports = { GHL };

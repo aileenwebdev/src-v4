@@ -53,6 +53,7 @@ app.all('/api/system-config',     loadHandler('./api/system-config.js'));
 app.all('/api/tickets',           loadHandler('./api/tickets.js'));
 app.post('/api/trigger-workflow', loadHandler('./api/trigger-workflow.js'));
 app.all('/api/wibiz-proxy',       loadHandler('./api/wibiz-proxy.js'));
+app.get('/api/conversations',    loadHandler('./api/conversations.js'));
 app.post('/api/webhooks/ghl',     loadHandler('./api/webhooks/ghl.js'));
 
 // ── Static files (Vite build output) ──────────────────────────────────────

@@ -212,10 +212,11 @@ textarea{resize:vertical}
     <nav class="sb-nav">
       <div class="sb-sec">Navigation</div>
       <div class="sb-lnk active" onclick="navigate('dashboard')" id="nav-dashboard"><span class="ni">🏠</span> Dashboard</div>
+      <div class="sb-lnk" onclick="navigate('inbox')"       id="nav-inbox"><span class="ni">💬</span> Unified Inbox</div>
       <div class="sb-lnk" onclick="navigate('analytics')"   id="nav-analytics"><span class="ni">📊</span> Analytics</div>
+      <div class="sb-lnk" onclick="navigate('bookings')"    id="nav-bookings"><span class="ni">📅</span> All Bookings</div>
       <div class="sb-lnk" onclick="navigate('staff')"       id="nav-staff"><span class="ni">👔</span> Staff Management</div>
       <div class="sb-lnk" onclick="navigate('config')"      id="nav-config"><span class="ni">⚙️</span> System Config</div>
-      <div class="sb-lnk" onclick="navigate('bookings')"    id="nav-bookings"><span class="ni">📅</span> All Bookings</div>
     </nav>
     <div class="sb-ft">
       <div class="sb-logout" onclick="doLogout()"><span>↩</span> Sign Out</div>
@@ -247,11 +248,27 @@ textarea{resize:vertical}
             <div class="hs"><div class="hs-n" id="stat-members">—</div><div class="hs-l">Members</div></div>
           </div>
         </div>
-        <div class="qa-grid">
-          <div class="qa" onclick="navigate('analytics')"><div class="qa-ico">📊</div><div class="qa-t">Analytics</div><div class="qa-s">View booking trends</div></div>
+        <div class="qa-grid" style="grid-template-columns:repeat(5,1fr)">
+          <div class="qa" onclick="navigate('inbox')"><div class="qa-ico">💬</div><div class="qa-t">Unified Inbox</div><div class="qa-s">All conversations</div></div>
+          <div class="qa" onclick="navigate('analytics')"><div class="qa-ico">📊</div><div class="qa-t">Analytics</div><div class="qa-s">Booking trends</div></div>
+          <div class="qa" onclick="navigate('bookings')"><div class="qa-ico">📅</div><div class="qa-t">All Bookings</div><div class="qa-s">Facilities &amp; dining</div></div>
           <div class="qa" onclick="navigate('staff')"><div class="qa-ico">👔</div><div class="qa-t">Staff Accounts</div><div class="qa-s">Manage staff users</div></div>
           <div class="qa" onclick="navigate('config')"><div class="qa-ico">⚙️</div><div class="qa-t">System Config</div><div class="qa-s">Quotas &amp; facilities</div></div>
-          <div class="qa" onclick="navigate('bookings')"><div class="qa-ico">📅</div><div class="qa-t">All Bookings</div><div class="qa-s">View all bookings</div></div>
+        </div>
+        <!-- Pipeline summary -->
+        <div class="two-col" style="margin-top:0">
+          <div class="panel">
+            <div class="panel-hd"><h3>Guest Pipeline</h3><span class="act" onclick="navigate('analytics')">View all →</span></div>
+            <div id="dash-pipeline" style="padding:16px">
+              <div style="color:var(--muted);font-size:13px">Loading…</div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-hd"><h3>Top Facilities</h3><span class="act" onclick="navigate('analytics')">View all →</span></div>
+            <div id="dash-facilities" style="padding:16px">
+              <div style="color:var(--muted);font-size:13px">Loading…</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -266,6 +283,9 @@ textarea{resize:vertical}
 
       <!-- All Bookings -->
       <div class="screen" id="screen-bookings"></div>
+
+      <!-- Unified Inbox -->
+      <div class="screen" id="screen-inbox"></div>
     </div>
   </div>
 </div>
@@ -275,6 +295,8 @@ import { renderAnalyticsScreen, loadAnalytics } from './src/management/analytics
 import { renderStaffMgmtScreen, bindStaffMgmt } from './src/management/staff-mgmt.js';
 import { renderSystemConfigScreen, loadSystemConfig } from './src/management/system-config.js';
 import { renderBookingsTodayScreen, loadTodayBookings } from './src/staff/bookings-today.js';
+import { renderInboxScreen, loadInbox, filterInbox } from './src/management/inbox.js';
+window.filterInbox = filterInbox;
 
 let SESSION = null;
 
@@ -341,12 +363,47 @@ async function loadDashboardStats() {
     document.getElementById('stat-guests').textContent   = s.guestBookings  ?? '—';
     document.getElementById('stat-checkin').textContent  = s.checkInRate != null ? s.checkInRate + '%' : '—';
     document.getElementById('stat-members').textContent  = s.totalMembers  ?? '—';
+
+    // Pipeline panel
+    const pipeEl = document.getElementById('dash-pipeline');
+    if (pipeEl && data.pipeline) {
+      const p = data.pipeline;
+      pipeEl.innerHTML = [
+        ['Upcoming / Confirmed', p.confirmed, 'bb'],
+        ['Checked In', p.checkedIn, 'bg'],
+        ['No Show / Past', p.noShow, 'br'],
+      ].map(([label, val, cls]) => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px;color:var(--muted)">${label}</span>
+          <span class="badge ${cls}">${val ?? 0}</span>
+        </div>`).join('') +
+        `<div style="padding:9px 0;font-size:13px;color:var(--muted)">
+          Guest registrations (30d): <strong style="color:var(--navy)">${s.guestBookings ?? 0}</strong>
+        </div>`;
+    }
+
+    // Facilities panel
+    const facEl = document.getElementById('dash-facilities');
+    if (facEl && data.byFacility) {
+      const entries = Object.entries(data.byFacility).sort((a,b) => b[1]-a[1]).slice(0,5);
+      const max = entries[0]?.[1] || 1;
+      facEl.innerHTML = entries.map(([fac, cnt]) => `
+        <div style="margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px">
+            <span>${fac}</span><span style="font-weight:600;color:var(--navy)">${cnt}</span>
+          </div>
+          <div style="background:var(--border);height:5px;border-radius:4px">
+            <div style="width:${Math.round((cnt/max)*100)}%;height:100%;background:var(--gold);border-radius:4px"></div>
+          </div>
+        </div>`).join('') || '<div style="color:var(--muted)">No data.</div>';
+    }
   } catch { /* non-fatal */ }
 }
 
 // ── Navigation ─────────────────────────────────────────────────────────────
 const TITLES = {
   dashboard: 'Dashboard',
+  inbox:     'Unified Inbox',
   analytics: 'Analytics',
   staff:     'Staff Management',
   config:    'System Config',
@@ -363,7 +420,10 @@ window.navigate = (id) => {
   document.getElementById('tb-title').textContent = TITLES[id] || id;
   closeSidebar();
 
-  if (id === 'analytics' && !screen.dataset.loaded) {
+  if (id === 'inbox') {
+    screen.innerHTML = renderInboxScreen();
+    loadInbox();
+  } else if (id === 'analytics' && !screen.dataset.loaded) {
     screen.innerHTML = renderAnalyticsScreen();
     loadAnalytics(7, screen.querySelector('.fbtn'));
     screen.dataset.loaded = '1';

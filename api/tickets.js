@@ -1,8 +1,8 @@
-// api/tickets.js — Create and list support tickets stored as GHL contact notes
+// api/tickets.js — Create and list support tickets stored as contact notes
 // GET  ?contactId=xxx            → list tickets for that member
 // POST { contactId, subject, body, createdBy } → create ticket
-
-import { GHL } from '../src/ghl-client.js';
+'use strict';
+const { GHL } = require('../src/ghl-client.js');
 
 const TICKET_PREFIX = '[TICKET]';
 
@@ -13,7 +13,7 @@ function formatTicket({ subject, body, createdBy, status = 'open' }) {
 function parseTicket(note) {
   const lines = (note.body || '').split('\n');
   if (!lines[0]?.startsWith(TICKET_PREFIX)) return null;
-  const subject = lines[0].replace(TICKET_PREFIX, '').trim();
+  const subject    = lines[0].replace(TICKET_PREFIX, '').trim();
   const statusLine = lines.find(l => l.startsWith('Status:')) || '';
   const byLine     = lines.find(l => l.startsWith('Created by:')) || '';
   const body       = lines.slice(3).join('\n').trim();
@@ -27,17 +27,15 @@ function parseTicket(note) {
   };
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
 
   if (req.method === 'GET') {
     const { contactId } = req.query || {};
     if (!contactId) return res.status(400).json({ error: 'contactId required' });
-
     try {
       const data    = await GHL.getNotes(contactId);
-      const notes   = data.notes || [];
-      const tickets = notes.map(parseTicket).filter(Boolean);
+      const tickets = (data.notes || []).map(parseTicket).filter(Boolean);
       return res.status(200).json({ success: true, tickets });
     } catch (e) {
       return res.status(e.status || 500).json({ error: e.message });
@@ -58,4 +56,4 @@ export default async function handler(req, res) {
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
-}
+};

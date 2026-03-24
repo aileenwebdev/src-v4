@@ -442,7 +442,7 @@ function bindQuickCheckin() {
         </div>`;
 
       window.confirmCheckin = async (contactId) => {
-        if (!contactId) { alert('No GHL contact ID available for this member.'); return; }
+        if (!contactId) { alert('No contact ID available for this member.'); return; }
         const r2 = await fetch('/api/checkin', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },

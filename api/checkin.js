@@ -1,11 +1,10 @@
 // api/checkin.js — Toggle check-in status for a booking contact
 // POST body: { contactId, checkedIn: boolean }
+'use strict';
+const { GHL } = require('../src/ghl-client.js');
 
-import { GHL } from '../src/ghl-client.js';
-
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
-
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { contactId, checkedIn } = req.body || {};
@@ -22,4 +21,4 @@ export default async function handler(req, res) {
   } catch (e) {
     return res.status(e.status || 500).json({ error: e.message });
   }
-}
+};
