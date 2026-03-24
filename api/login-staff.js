@@ -29,7 +29,7 @@ module.exports = (req, res) => {
   }
 
   const users = loadUsers();
-  const user  = users.find(u => u.username.toLowerCase() === username.toLowerCase().trim());
+  const user  = users.find(u => (u.username || u.staffId || '').toLowerCase() === username.toLowerCase().trim());
 
   if (!user || sha256(password) !== user.passwordHash) {
     return res.status(401).json({ error: 'Invalid credentials' });
