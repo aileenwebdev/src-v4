@@ -8,28 +8,24 @@ app.use(express.json());
 
 /**
  * Load a handler from either a CJS or ESM module.
- * Falls back to ESM dynamic import when require() throws ERR_REQUIRE_ESM.
+ * If require() fails (e.g. ESM syntax), falls back to dynamic import() at request time.
  */
 function loadHandler(filePath) {
   const absPath = path.resolve(__dirname, filePath);
   try {
     const mod = require(absPath);
     return mod.default || mod;
-  } catch (e) {
-    // ESM file: fall back to dynamic import()
-    if (e.code === 'ERR_REQUIRE_ESM' || e instanceof SyntaxError) {
-      return async (req, res) => {
-        try {
-          const { default: handler } = await import(pathToFileURL(absPath).href);
-          return handler(req, res);
-        } catch (err) {
-          console.error(`ESM handler error [${filePath}]:`, err.message);
-          return res.status(503).json({ success: false, error: 'Service unavailable — check API credentials' });
-        }
-      };
-    }
-    console.error(`Failed to load [${filePath}]:`, e.message);
-    return (_req, res) => res.status(503).json({ success: false, error: 'Handler load failed' });
+  } catch {
+    // require() failed — likely ESM syntax. Try dynamic import() at request time.
+    return async (req, res) => {
+      try {
+        const { default: handler } = await import(pathToFileURL(absPath).href);
+        return handler(req, res);
+      } catch (err) {
+        console.error(`Handler unavailable [${filePath}]:`, err.message);
+        return res.status(503).json({ success: false, error: 'Service unavailable — API credentials may be required' });
+      }
+    };
   }
 }
 
