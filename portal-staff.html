@@ -255,6 +255,16 @@ textarea{resize:vertical}
           <div class="qa" onclick="navigate('members')"><div class="qa-ico">👥</div><div class="qa-t">Member Search</div><div class="qa-s">Look up any member</div></div>
           <div class="qa" onclick="navigate('tickets')"><div class="qa-ico">🎫</div><div class="qa-t">Support Tickets</div><div class="qa-s">Raise a member issue</div></div>
         </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-hd"><h3>Guests Pipeline</h3></div>
+            <div id="staff-guests-pipeline" style="padding:16px"><div style="color:var(--muted);font-size:13px">Loading…</div></div>
+          </div>
+          <div class="panel">
+            <div class="panel-hd"><h3>Bookings Pipeline</h3></div>
+            <div id="staff-bookings-pipeline" style="padding:16px"><div style="color:var(--muted);font-size:13px">Loading…</div></div>
+          </div>
+        </div>
         <div class="panel">
           <div class="panel-hd"><h3>Recent Bookings</h3><a onclick="navigate('bookings')">View all</a></div>
           <div id="dash-recent"><div style="padding:32px;text-align:center;color:var(--muted)">Loading…</div></div>
@@ -290,6 +300,7 @@ textarea{resize:vertical}
 import { renderMemberSearchScreen, bindMemberSearch } from './src/staff/member-search.js';
 import { renderBookingsTodayScreen, loadTodayBookings } from './src/staff/bookings-today.js';
 import { renderTicketsScreen, bindTickets } from './src/staff/tickets.js';
+import { loadStaffPipelines } from './src/staff/pipelines.js';
 
 let SESSION = null;
 const API_PWD = '';  // Staff portal uses session auth, not query-param auth
@@ -383,6 +394,9 @@ async function loadDashboard() {
         }).join('')
       : '<div style="padding:32px;text-align:center;color:var(--muted)">No bookings today.</div>';
   } catch { /* non-fatal */ }
+
+  // Real pipeline data
+  loadStaffPipelines('staff-guests-pipeline', 'staff-bookings-pipeline');
 }
 
 // ── Navigation ─────────────────────────────────────────────────────────────
