@@ -1,86 +1,62 @@
-// api/submit-booking.js
+// api/submit-booking.js — Server-side booking submission to GHL inbound webhook
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+  const webhookUrl = process.env.GHL_INBOUND_WEBHOOK_URL;
+  if (!webhookUrl) return res.status(503).json({ error: 'Booking webhook not configured' });
 
   try {
     const {
-      type, // 'facility' | 'le_mansion' | 'barkers' | 'oasis'
-      memberId,
-      memberName,
-      memberEmail,
-      memberPhone,
-      facility, // 'tennis' | 'squash' | 'gym' | 'le_mansion' etc.
-      date,
-      time,
-      pax,
-      guestName,
-      guestEmail,
-      guestPhone,
-    } = req.body;
+      email, phone, name, membership_number,
+      facility_or_venue, booking_shift, slot_date,
+      slot_start_time, slot_end_time, outlet_pax,
+      booking_reference, booking_type,
+    } = req.body || {};
 
-    // Validate required fields
-    if (!type || !memberId || !facility || !date || !time) {
-      return res.status(400).json({
-        error: "Missing required fields",
-      });
+    if (!email || !slot_date || !facility_or_venue || !booking_reference) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // GHL Inbound Webhook URL (from your workflow)
-    const webhookUrl = process.env.GHL_INBOUND_WEBHOOK_URL;
+    // Compute scheduled timestamps
+    function isoAddMins(isoStart, mins) {
+      const d = new Date(isoStart);
+      d.setMinutes(d.getMinutes() + mins);
+      return d.toISOString().slice(0, 19);
+    }
 
-    // Prepare payload for GHL
+    const startISO = slot_start_time || (slot_date + 'T00:00:00');
+
     const payload = {
-      memberId,
-      memberName,
-      memberEmail,
-      memberPhone,
-      bookingType: type,
-      facility,
-      date,
-      time,
-      pax: pax || 1,
-      source: "Member Portal Dashboard",
-      timestamp: new Date().toISOString(),
+      email,
+      phone:                 phone || '',
+      name:                  name  || '',
+      membership_number:     membership_number || '',
+      facility_or_venue,
+      booking_shift:         booking_shift || '',
+      slot_date,
+      slot_start_time:       startISO,
+      slot_end_time:         slot_end_time || isoAddMins(startISO, 60),
+      outlet_pax:            String(outlet_pax || 1),
+      booking_reference,
+      booking_type:          booking_type || 'advance',
+      cancellation_deadline: isoAddMins(startISO, -1440),
+      overdue_check_at:      isoAddMins(startISO, 15),
+      no_show_check_at:      isoAddMins(startISO, 30),
+      feedback_send_at:      isoAddMins(startISO, 180),
     };
 
-    // Add guest info if provided
-    if (guestName) {
-      payload.guestName = guestName;
-      payload.guestEmail = guestEmail || "";
-      payload.guestPhone = guestPhone || "";
-    }
-
-    // Send to GHL Inbound Webhook
     const response = await fetch(webhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(payload),
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
     });
 
-    if (!response.ok) {
-      throw new Error(`GHL webhook failed: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`GHL webhook responded ${response.status}`);
 
-    const ghlResponse = await response.json();
-
-    return res.status(200).json({
-      success: true,
-      message: "Booking submitted to GHL workflow",
-      ghlResponse,
-    });
+    return res.status(200).json({ success: true, booking_reference });
   } catch (error) {
-    console.error("Submit Booking Error:", error);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    console.error('submit-booking error:', error.message);
+    return res.status(500).json({ success: false, error: error.message });
   }
 }

@@ -862,11 +862,18 @@ textarea{resize:vertical}
 // WEBHOOKS — exact URLs per action
 // ═══════════════════════════════════
 const WH = {
-  INTAKE:  'https://services.leadconnectorhq.com/hooks/0h4aeb2m1HrDJ0coPb31/webhook-trigger/1a91ca30-02a0-4eea-a81b-be1805ccd095',
+  INTAKE:  'https://services.leadconnectorhq.com/hooks/0h4aeb2m1HrDJ0coPb31/webhook-trigger/d6e07e32-86f0-45d1-b22c-011df9f86e4a',
   ISSUER:  'https://services.leadconnectorhq.com/hooks/0h4aeb2m1HrDJ0coPb31/webhook-trigger/70888a71-fb04-4525-b13f-0820e2e07fd8',
   SCANNER: 'https://services.leadconnectorhq.com/hooks/0h4aeb2m1HrDJ0coPb31/webhook-trigger/de3a09b4-8e4e-4e8e-96b7-2b49e8f9f599',
-  INBOUND: 'https://services.leadconnectorhq.com/hooks/0h4aeb2m1HrDJ0coPb31/webhook-trigger/8a92e86d-35c5-41cb-ba33-62c5b2628892',
+  INBOUND: 'https://services.leadconnectorhq.com/hooks/0h4aeb2m1HrDJ0coPb31/webhook-trigger/70888a71-fb04-4525-b13f-0820e2e07fd8',
 };
+
+// Add minutes to a date+time string → ISO "YYYY-MM-DDTHH:MM:SS"
+function isoAddMins(date, time, mins) {
+  const d = new Date(date + 'T' + time + ':00');
+  d.setMinutes(d.getMinutes() + mins);
+  return d.toISOString().slice(0, 19);
+}
 
 // ═══════════════════════════════════
 // MEMBER STATE
@@ -1633,20 +1640,19 @@ async function facConfirm() {
 
   // Blueprint v2.0 exact field keys
   await fireGHL(WH.INTAKE, {
-    booking_type:           'facility',
-    booking_source:         'form',
-    booking_mode:           'advance',
-    facility_or_venue:      FAC.type,          // GHL dropdown value: tennis/squash/gym
-    facility_name:          FAC.name,           // Human-readable name
-    slot_date:              date,
-    slot_start_time:        time,
-    slot_end_time:          endTime,
-    booking_pax_count:      gNum,               // Corrected from party_size
-    booking_outlet_pax:     gNum,
-    booking_status:         'confirmed',
-    visit_id:               ref,
-    special_request:        notes||'',
-    booking_contact_number: MBR.phone||'',
+    name:                  MBR.name,
+    booking_type:          'advance',
+    facility_or_venue:     FAC.type,
+    booking_shift:         '',
+    slot_date:             date,
+    slot_start_time:       date + 'T' + time + ':00',
+    slot_end_time:         date + 'T' + endTime + ':00',
+    outlet_pax:            String(gNum),
+    booking_reference:     ref,
+    cancellation_deadline: isoAddMins(date, time, -1440),
+    overdue_check_at:      isoAddMins(date, time, 15),
+    no_show_check_at:      isoAddMins(date, time, 30),
+    feedback_send_at:      isoAddMins(date, time, 180),
   }, 'booking');
 
   const bk = {
@@ -1917,25 +1923,18 @@ async function issueGP() {
   const payload = {
     firstName:              nameParts[0],
     lastName:               nameParts.slice(1).join(' ')||'',
-    email:                  email,
-    phone:                  phone||'',
-    booking_type:           'guest_pass',
-    booking_source:         'form',
-    booking_full_name:      name,
-    booking_guest_name:     name,
-    booking_contact_number: phone||'',
-    slot_date:              date,
-    visit_id:               ref,
-    booking_status:         'confirmed',
-    facility_or_venue:      facility,
-    facility_name:          facility,
-    booking_pax_count:      1,
-    src_verify_url:         verifyUrl,
-    visit_purpose:          purpose,
-    member_owner_name:      MBR.name,
-    member_owner_email:     MBR.email,
-    membership_number:      MBR.membershipNumber||MBR.id,
-    inviting_member_id:     MBR.membershipNumber||MBR.id,
+    first_name:          nameParts[0],
+    email:               email,
+    phone:               phone||'',
+    vehicle_no:          '',
+    visit_date:          date,
+    guest_role:          'Additional',
+    member_owner_email:  MBR.email,
+    member_owner_name:   MBR.name,
+    member_owner_cid:    MBR.id||'',
+    registration_source: 'Member Portal',
+    booking_id:          ref,
+    verify_url:          verifyUrl,
   };
 
   await fireGHL(WH.ISSUER,  payload, 'guest');
