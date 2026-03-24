@@ -13,7 +13,10 @@ module.exports = async function handler(req, res) {
   try {
     if (id) {
       const data = await GHL.getMessages(id);
-      return res.status(200).json({ success: true, messages: data.messages || [] });
+      // GHL returns { messages: { messages: [...], nextPage: bool } } (nested)
+      const raw  = data.messages;
+      const msgs = Array.isArray(raw) ? raw : (raw?.messages || []);
+      return res.status(200).json({ success: true, messages: msgs });
     }
 
     const data = await GHL.listConversations(Math.min(parseInt(limit, 10), 100));
