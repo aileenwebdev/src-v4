@@ -16,14 +16,15 @@ function loadHandler(filePath) {
     const mod = require(absPath);
     return mod.default || mod;
   } catch (e) {
-    if (e.code === 'ERR_REQUIRE_ESM') {
+    // ESM file: fall back to dynamic import()
+    if (e.code === 'ERR_REQUIRE_ESM' || e instanceof SyntaxError) {
       return async (req, res) => {
         try {
           const { default: handler } = await import(pathToFileURL(absPath).href);
           return handler(req, res);
         } catch (err) {
           console.error(`ESM handler error [${filePath}]:`, err.message);
-          return res.status(503).json({ success: false, error: 'Service unavailable' });
+          return res.status(503).json({ success: false, error: 'Service unavailable — check API credentials' });
         }
       };
     }
