@@ -48,12 +48,17 @@ async function fetchPipelineDef(pipelineId) {
   return (data.pipelines || []).find(p => p.id === pipelineId) || null;
 }
 
-// Fetch all contacts and build a contactId → contact map
+// Fetch all contacts (paginated) and build a contactId → contact map
 async function buildContactMap() {
-  const data     = await ghlGet(`/contacts/?locationId=${locId()}&limit=500`);
-  const contacts = data.contacts || [];
-  const map      = {};
-  for (const c of contacts) map[c.id] = c;
+  const map  = {};
+  let   page = 1;
+  while (true) {
+    const data     = await ghlGet(`/contacts/?locationId=${locId()}&limit=100&page=${page}`);
+    const contacts = data.contacts || [];
+    for (const c of contacts) map[c.id] = c;
+    if (contacts.length < 100) break;
+    page++;
+  }
   return map;
 }
 

@@ -11,7 +11,7 @@ module.exports = async function handler(req, res) {
   const days = Math.min(parseInt(req.query.days || '30', 10), 90);
 
   try {
-    const data     = await GHL.listContacts(200);
+    const data     = await GHL.listContacts(100);
     const contacts = data.contacts || [];
 
     const now    = new Date();

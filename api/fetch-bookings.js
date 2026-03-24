@@ -33,16 +33,23 @@ module.exports = async function handler(req, res) {
   const todaySGT = nowSGT.toISOString().split('T')[0];
 
   try {
-    const ghlRes = await fetch(
-      `https://services.leadconnectorhq.com/contacts/?locationId=${locationId}&limit=200`,
-      { headers: { 'Authorization': `Bearer ${token}`, 'Version': '2021-07-28' } }
-    );
-    if (!ghlRes.ok) {
-      const detail = await ghlRes.text();
-      return res.status(502).json({ success: false, error: `API error ${ghlRes.status}`, detail });
+    // Paginate — GHL max limit is 100
+    const all = [];
+    let page  = 1;
+    while (true) {
+      const ghlRes = await fetch(
+        `https://services.leadconnectorhq.com/contacts/?locationId=${locationId}&limit=100&page=${page}`,
+        { headers: { 'Authorization': `Bearer ${token}`, 'Version': '2021-07-28' } }
+      );
+      if (!ghlRes.ok) {
+        const detail = await ghlRes.text();
+        return res.status(502).json({ success: false, error: `API error ${ghlRes.status}`, detail });
+      }
+      const { contacts = [] } = await ghlRes.json();
+      all.push(...contacts);
+      if (contacts.length < 100) break;
+      page++;
     }
-
-    const { contacts: all = [] } = await ghlRes.json();
 
     const cf = (c, k) => {
       const f = (c.customFields || []).find(x => x.fieldKey === `contact.${k}` || x.fieldKey === k);
