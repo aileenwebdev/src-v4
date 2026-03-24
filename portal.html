@@ -1,0 +1,2471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<title>SRC Member Portal — Singapore Recreation Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#ad974f;--gold-light:#c9a96e;--gold-dim:rgba(173,151,79,.12);
+  --navy:#0a162b;--blue:#001e4d;--navy2:#1a3060;
+  --cream:#f8f5ef;--cream2:#f2ede4;
+  --white:#fff;--text:#1a1a1a;--muted:#6b7280;--border:#e8e2d8;
+  --success:#166534;--success-bg:#dcfce7;
+  --warn:#92400e;--warn-bg:#fef3c7;
+  --info:#1e40af;--info-bg:#dbeafe;
+  --danger:#c0392b;--danger-bg:#fee2e2;
+  --sidebar-w:264px;--radius:14px;--radius-sm:8px;--radius-lg:18px;
+  --shadow:0 2px 12px rgba(0,0,0,.06);--shadow-lg:0 8px 32px rgba(0,0,0,.12)
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);font-size:15px;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:'DM Sans',sans-serif;cursor:pointer}
+textarea{resize:vertical}
+
+/* LOGIN */
+#login-page{display:flex;min-height:100vh;align-items:stretch}
+.login-left{flex:1;background:linear-gradient(155deg,var(--navy) 0%,#0f2040 50%,#0a1830 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 48px;position:relative;overflow:hidden}
+.login-left::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;border:90px solid rgba(173,151,79,.05);top:-140px;right:-140px}
+.login-left::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;border:60px solid rgba(173,151,79,.04);bottom:-100px;left:-80px}
+.ll-c{position:relative;z-index:1;width:100%;max-width:340px}
+.login-logo{text-align:center;margin-bottom:52px}
+.login-emblem{width:84px;height:84px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);box-shadow:0 0 0 8px rgba(173,151,79,.15),0 12px 40px rgba(173,151,79,.3)}
+.login-logo h1{font-family:'Playfair Display',serif;font-size:22px;color:white;letter-spacing:.3px;line-height:1.3}
+.login-logo p{color:rgba(255,255,255,.38);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:6px}
+.lf-item{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.lf-item:last-child{border-bottom:none}
+.lf-icon{width:38px;height:38px;background:rgba(173,151,79,.14);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.lf-text strong{display:block;color:rgba(255,255,255,.88);font-size:13.5px;margin-bottom:2px}
+.lf-text span{color:rgba(255,255,255,.45);font-size:12px}
+.login-right{width:500px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding:64px 60px;background:white}
+.login-hdr{margin-bottom:32px}
+.login-hdr h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--navy);margin-bottom:8px}
+.login-hdr p{color:var(--muted);font-size:14px;line-height:1.6}
+.login-err{background:var(--danger-bg);color:var(--danger);border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px}
+.fg{margin-bottom:18px}
+.fl{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:7px}
+.fi{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;color:var(--text);transition:border-color .2s,box-shadow .2s;background:white}
+.fi:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(173,151,79,.1)}
+.fi.error{border-color:var(--danger)}
+.fi-err{color:var(--danger);font-size:12px;margin-top:5px;display:none}
+.btn-login{width:100%;padding:14px;background:var(--navy);color:var(--gold);border:none;border-radius:10px;font-size:15px;font-weight:600;letter-spacing:.3px;transition:all .2s;margin-top:4px}
+.btn-login:hover{background:var(--blue);transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,22,43,.3)}
+.login-ft{margin-top:20px;text-align:center;color:var(--muted);font-size:12.5px}
+
+/* LAYOUT */
+#portal-page{display:none}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;z-index:200;border-right:1px solid rgba(173,151,79,.12);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sb-brand{padding:20px 22px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px}
+.sb-emb{width:42px;height:42px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--navy);flex-shrink:0}
+.sb-brand-txt strong{display:block;color:white;font-size:13px;font-weight:600;line-height:1.3}
+.sb-brand-txt span{color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.8}
+.sb-mem{padding:16px 22px;background:rgba(173,151,79,.08);border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-mem-name{color:white;font-size:14px;font-weight:600}
+.sb-mem-id{color:var(--gold);font-size:11px;margin-top:3px;letter-spacing:.5px}
+.sb-mem-tier{display:inline-block;background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;margin-top:7px;text-transform:uppercase;letter-spacing:.8px}
+.sb-nav{flex:1;padding:14px 0;overflow-y:auto}
+.sb-nav::-webkit-scrollbar{width:3px}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
+.sb-sec{color:rgba(255,255,255,.25);font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;padding:14px 22px 5px}
+.sb-lnk{display:flex;align-items:center;gap:12px;padding:10px 22px;color:rgba(255,255,255,.58);font-size:13.5px;font-weight:500;transition:all .18s;cursor:pointer;border-right:3px solid transparent}
+.sb-lnk:hover{background:rgba(173,151,79,.1);color:rgba(255,255,255,.9)}
+.sb-lnk.active{background:rgba(173,151,79,.14);color:white;border-right-color:var(--gold)}
+.ni{width:20px;text-align:center;font-size:15px;flex-shrink:0;opacity:.85}
+.sb-lnk.active .ni{opacity:1}
+.sb-badge{margin-left:auto;background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px}
+.sb-ft{padding:14px 22px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-quota{background:rgba(255,255,255,.05);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.sb-quota-lbl{color:rgba(255,255,255,.32);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.sb-quota-bar{background:rgba(255,255,255,.08);height:4px;border-radius:10px;overflow:hidden}
+.sb-quota-fill{background:linear-gradient(90deg,var(--gold),var(--gold-light));height:100%;border-radius:10px;transition:width .4s ease}
+.sb-quota-txt{color:rgba(255,255,255,.48);font-size:11px;margin-top:6px}
+.sb-logout{color:rgba(255,255,255,.32);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:9px;padding:4px 0;transition:color .2s}
+.sb-logout:hover{color:rgba(255,255,255,.65)}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+.main{margin-left:var(--sidebar-w);min-height:100vh}
+
+/* GHL STATUS STRIP */
+.ghl-strip{background:linear-gradient(90deg,var(--navy),#0f2040);border-bottom:1px solid rgba(173,151,79,.2);padding:7px 28px;display:flex;align-items:center;justify-content:space-between;font-size:12px;min-height:34px;transition:all .4s}
+.ghl-strip.firing{background:linear-gradient(90deg,#3d2a00,#2a1d00);border-bottom-color:rgba(173,151,79,.5)}
+.ghl-strip.success{background:linear-gradient(90deg,#0a2a14,#051a0d);border-bottom-color:rgba(22,101,52,.5)}
+.ghl-strip.error{background:linear-gradient(90deg,#2a0a0a,#1a0505);border-bottom-color:rgba(192,57,43,.5)}
+.ghl-left{display:flex;align-items:center;gap:9px}
+.ghl-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0;transition:background .3s}
+.ghl-dot.pulse{animation:ghlpulse 1.5s infinite}
+.ghl-dot.orange{background:var(--gold)}
+.ghl-dot.red{background:var(--danger)}
+@keyframes ghlpulse{0%,100%{opacity:1}50%{opacity:.4}}
+.ghl-label{color:rgba(255,255,255,.7);font-weight:500}
+.ghl-label strong{color:rgba(255,255,255,.95)}
+.ghl-ref{color:var(--gold);font-family:monospace;font-size:11px;letter-spacing:.5px}
+.ghl-wf-badges{display:flex;gap:5px}
+.ghl-wf-tag{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;letter-spacing:.3px;transition:all .3s}
+.ghl-wf-tag.active{background:rgba(173,151,79,.2);border-color:var(--gold);color:var(--gold)}
+
+/* TOPBAR */
+.topbar{background:white;padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 1px 10px rgba(0,0,0,.05)}
+.tb-left{display:flex;align-items:center;gap:14px}
+.hamburger{display:none;width:36px;height:36px;background:none;border:1.5px solid var(--border);border-radius:8px;align-items:center;justify-content:center;font-size:17px;color:var(--navy)}
+.tb-title{font-size:17px;font-weight:600;color:var(--navy)}
+.tb-date{color:var(--muted);font-size:12px;margin-top:1px}
+.tb-right{display:flex;align-items:center;gap:10px}
+
+/* NOTIFICATIONS */
+.notif-wrap{position:relative}
+.notif-btn{width:38px;height:38px;background:var(--cream);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1.5px solid var(--border);font-size:16px;position:relative;transition:all .2s}
+.notif-btn:hover{border-color:var(--gold);background:#fffbef}
+.notif-count{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;background:var(--gold);border-radius:10px;border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--navy);padding:0 3px}
+.notif-count.hidden{display:none}
+.notif-panel{position:absolute;top:calc(100% + 10px);right:0;width:360px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-lg);border:1px solid var(--border);z-index:500;display:none;overflow:hidden}
+.notif-panel.open{display:block;animation:dropIn .18s ease}
+@keyframes dropIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.notif-panel-hd{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.notif-panel-hd h4{font-size:14px;font-weight:600;color:var(--navy)}
+.notif-mark-all{font-size:12px;color:var(--gold);cursor:pointer;font-weight:500}
+.notif-list{max-height:340px;overflow-y:auto}
+.notif-item{display:flex;gap:11px;padding:13px 18px;border-bottom:1px solid #f5f2ee;cursor:pointer;transition:background .15s;position:relative}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:#fdfbf8}
+.notif-item.unread{background:#fffdf7}
+.notif-item.unread::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);border-radius:0 2px 2px 0}
+.notif-dot-ind{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px}
+.notif-dot-ind.read{background:var(--border)}
+.notif-body{flex:1}
+.notif-title{font-size:13px;font-weight:600;color:var(--navy)}
+.notif-msg{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.5}
+.notif-time{font-size:11px;color:var(--gold);margin-top:4px}
+.notif-action-hint{font-size:10.5px;color:var(--gold);margin-top:3px;font-weight:600;opacity:.8}
+.notif-empty{padding:28px;text-align:center;color:var(--muted);font-size:13px}
+
+/* CONTENT */
+.content{padding:26px 28px}
+.screen{display:none}.screen.active{display:block}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#0c2040 50%,var(--blue) 100%);border-radius:var(--radius-lg);padding:28px 32px;color:white;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::after{content:'SRC';position:absolute;right:28px;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:130px;font-weight:700;color:rgba(255,255,255,.025);line-height:1;pointer-events:none}
+.hero h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:5px;position:relative;z-index:1}
+.hero h2 span{color:var(--gold)}
+.hero p{color:rgba(255,255,255,.5);font-size:13px;margin-bottom:20px;position:relative;z-index:1}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative;z-index:1}
+.hs{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 16px;text-align:center}
+.hs-n{font-size:26px;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif;line-height:1}
+.hs-l{font-size:11px;color:rgba(255,255,255,.42);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.wf-status{background:rgba(255,255,255,.08);border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:8px}
+.wf-dot{width:7px;height:7px;background:#10b981;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* QUICK ACTIONS */
+.qa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.qa{background:white;border-radius:var(--radius);padding:22px 16px;cursor:pointer;transition:all .25s;border:2px solid transparent;text-align:center;box-shadow:var(--shadow)}
+.qa:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.qa-ico{width:52px;height:52px;background:var(--cream);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px}
+.qa-t{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.qa-s{font-size:12px;color:var(--muted)}
+
+/* PANELS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.panel{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.panel-hd{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.panel-hd h3{font-size:15px;font-weight:600;color:var(--navy)}
+.panel-hd a,.panel-hd .act{color:var(--gold);font-size:13px;font-weight:500;cursor:pointer}
+
+/* BOOKING ROWS */
+.bk-row{display:flex;align-items:center;gap:13px;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.bk-row:last-child{border-bottom:none}
+.bk-row:hover{background:#fdfbf8}
+.bk-ico{width:42px;height:42px;border-radius:11px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.bk-inf{flex:1;min-width:0}
+.bk-t{font-size:14px;font-weight:600;color:var(--navy)}
+.bk-m{font-size:12px;color:var(--muted);margin-top:2px}
+.bk-r{text-align:right;flex-shrink:0}
+.bk-rt{font-size:13px;font-weight:600;color:var(--navy)}
+.bk-rd{font-size:11px;color:var(--muted);margin-top:2px}
+.bk-bookedat{font-size:11px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:3px;justify-content:flex-end;white-space:nowrap}
+
+/* BADGES */
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.bg{background:var(--success-bg);color:var(--success)}
+.by{background:var(--warn-bg);color:var(--warn)}
+.bb{background:var(--info-bg);color:var(--info)}
+.br{background:var(--danger-bg);color:var(--danger)}
+.bgr{background:#f3f4f6;color:#6b7280}
+
+/* SECTION HEADER */
+.s-hd{margin-bottom:22px}
+.s-hd h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:5px}
+.s-hd p{color:var(--muted);font-size:13.5px;line-height:1.55}
+
+/* FILTER TABS */
+.filter-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.fbtn{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;border:1.5px solid var(--border);background:white;color:var(--muted);cursor:pointer;transition:all .18s}
+.fbtn.active,.fbtn:hover{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+
+/* FACILITY LIST */
+.fac-list-item{background:white;border:1.5px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all .18s}
+.fac-list-item:hover{border-color:var(--gold);box-shadow:var(--shadow);transform:translateX(4px)}
+.fli-ico{width:44px;height:44px;background:var(--cream);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.fli-info{flex:1}
+.fli-name{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:3px}
+.fli-meta{font-size:12px;color:var(--muted)}
+.fli-arr{font-size:22px;color:var(--muted);font-weight:300}
+
+/* WIZARD */
+.wiz-step{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0}
+.wiz-n{width:30px;height:30px;border-radius:50%;background:var(--border);color:var(--muted);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.wiz-l{font-size:11px;color:var(--muted);font-weight:500;white-space:nowrap}
+.wiz-step.active .wiz-n{background:var(--gold);color:var(--navy)}
+.wiz-step.active .wiz-l{color:var(--navy);font-weight:600}
+.wiz-step.done .wiz-n{background:var(--success-bg);color:var(--success)}
+.wiz-step.done .wiz-l{color:var(--success)}
+.wiz-line{flex:1;height:2px;background:var(--border);margin:0 8px;margin-bottom:16px}
+
+/* PROFILE */
+.profile-grid{display:grid;grid-template-columns:250px 1fr;gap:20px}
+.p-card{background:white;border-radius:var(--radius);padding:28px;text-align:center;box-shadow:var(--shadow)}
+.p-av{width:76px;height:76px;background:var(--navy);border-radius:50%;margin:0 auto 14px;border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:26px;color:var(--gold)}
+.p-name{font-family:'Playfair Display',serif;font-size:19px;color:var(--navy)}
+.p-id{color:var(--gold);font-size:12px;margin-top:4px;letter-spacing:.5px}
+.p-stats{display:flex;gap:16px;justify-content:center;margin:16px 0;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.ps{text-align:center}
+.ps-n{font-size:22px;font-weight:700;color:var(--navy);font-family:'Playfair Display',serif;line-height:1}
+.ps-l{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.p-meta{text-align:left;margin-top:16px}
+.p-mr{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);padding:5px 0}
+
+/* FORMS */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:7px}
+.form-label span{font-weight:400;color:var(--muted)}
+.form-input,.form-select,.form-textarea{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;color:var(--text);background:white;transition:border-color .2s,box-shadow .2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(173,151,79,.1)}
+.form-input.error{border-color:var(--danger)}
+.form-err{color:var(--danger);font-size:12px;margin-top:4px;display:none}
+.form-textarea{min-height:80px}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.alert-strip{background:#fffbef;border:1px solid rgba(173,151,79,.45);border-left:3px solid var(--gold);border-radius:10px;padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;font-size:13px;color:#7a6520}
+.info-card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.info-card h4{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+
+/* BOOKING REF */
+.bk-ref-display{background:var(--cream);border:2px solid var(--border);border-radius:12px;padding:22px;text-align:center;margin:18px 0}
+.bk-ref-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.bk-ref-code{font-size:24px;font-weight:700;color:var(--navy);font-family:monospace;letter-spacing:2px;margin-bottom:10px}
+.bk-ref-copy{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:var(--gold);border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.bk-ref-copy:hover{background:var(--blue)}
+
+/* DETAIL ROWS */
+.d-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;gap:16px}
+.d-row:last-child{border-bottom:none}
+.dr-l{color:var(--muted);flex-shrink:0}
+.dr-v{color:var(--navy);font-weight:500;text-align:right}
+
+/* BUTTONS */
+.btn{padding:11px 22px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none!important}
+.btn-p{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.btn-p:hover:not(:disabled){background:var(--blue);transform:translateY(-1px)}
+.btn-g{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.btn-g:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
+.btn-o{background:transparent;color:var(--navy);border-color:var(--border)}
+.btn-o:hover:not(:disabled){border-color:var(--navy);background:var(--cream)}
+.btn-d{background:var(--danger);color:white;border-color:var(--danger)}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-fw{width:100%;display:flex}
+.btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(10,22,43,.6);z-index:1000;align-items:center;justify-content:center}
+.modal-ov.open{display:flex}
+.modal{background:white;border-radius:var(--radius-lg);padding:30px;width:500px;max-width:92vw;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+.modal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.modal-hd h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--navy)}
+.modal-x{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:7px}
+.modal-x:hover{background:var(--cream)}
+.modal-ref-box{background:var(--cream);border-radius:10px;padding:16px;margin:16px 0;text-align:center}
+.modal-ref-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.modal-ref-val{font-size:18px;font-weight:700;color:var(--navy);font-family:monospace;letter-spacing:1.5px;margin-bottom:8px}
+.modal-ref-copy{background:var(--navy);color:var(--gold);border:none;border-radius:7px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer}
+.modal-bookedon{background:var(--cream);margin:16px -30px -30px;padding:12px 30px;border-radius:0 0 var(--radius-lg) var(--radius-lg);display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.modal-bookedon span:first-child{color:var(--muted)}
+.modal-bookedon span:last-child{color:var(--navy);font-weight:600}
+.cancel-btn-wrap{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+
+/* TOAST */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:white;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:500;z-index:9999;transition:transform .3s ease;box-shadow:0 8px 24px rgba(0,0,0,.2);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.success{background:#166534}
+#toast.error{background:var(--danger)}
+
+/* CONFIRM DIALOG */
+.confirm-ov{display:none;position:fixed;inset:0;background:rgba(10,22,43,.5);z-index:2000;align-items:center;justify-content:center}
+.confirm-ov.open{display:flex}
+.confirm-box{background:white;border-radius:var(--radius-lg);padding:28px;width:420px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.confirm-box h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin-bottom:8px}
+.confirm-box p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:22px}
+.confirm-btns{display:flex;gap:10px;justify-content:flex-end}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.hero-stats{grid-template-columns:repeat(2,1fr)}.qa-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.profile-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}.field-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.login-left{display:none}.login-right{width:100%;padding:40px 28px}.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sb-overlay.open{display:block}.main{margin-left:0}.hamburger{display:flex}.qa-grid{grid-template-columns:1fr}.hero-stats{grid-template-columns:repeat(2,1fr)}.content{padding:16px}.topbar{padding:0 16px}.ghl-wf-badges{display:none}}
+@media(max-width:480px){.qa-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-page">
+<div class="login-left">
+  <div class="ll-c">
+    <div class="login-logo">
+      <div class="login-emblem">SRC</div>
+      <h1>Singapore<br>Recreation Club</h1>
+      <p>Est. 1883 · Member Portal</p>
+    </div>
+    <div class="lf-item"><div class="lf-icon">🏅</div><div class="lf-text"><strong>Facility Booking</strong><span>Tennis, Squash, Gym — 60-min slots</span></div></div>
+    <div class="lf-item"><div class="lf-icon">🍽️</div><div class="lf-text"><strong>Dining Reservations</strong><span>Le Mansion, Barker's Lounge &amp; Oasis</span></div></div>
+    <div class="lf-item"><div class="lf-icon">👥</div><div class="lf-text"><strong>Guest Management</strong><span>Register guests &amp; track monthly quota</span></div></div>
+    <div class="lf-item"><div class="lf-icon">🤖</div><div class="lf-text"><strong>AI Concierge</strong><span>Voice &amp; text support, 24/7</span></div></div>
+  </div>
+</div>
+<div class="login-right">
+  <div class="login-hdr">
+    <h2>Welcome Back</h2>
+    <p>Sign in with your SRC membership number and registered email address.</p>
+  </div>
+  <div class="login-err" id="loginErr">⚠️ <span id="loginErrMsg">Invalid membership number or email.</span></div>
+  <div class="fg">
+    <label class="fl">Membership Number</label>
+    <input class="fi" id="loginId" placeholder="e.g. SRC0102" type="text" autocomplete="username">
+    <div class="fi-err" id="loginIdErr">Please enter your membership number.</div>
+  </div>
+  <div class="fg">
+    <label class="fl">Email Address</label>
+    <input class="fi" id="loginEmail" placeholder="your@email.com" type="email" autocomplete="email">
+    <div class="fi-err" id="loginEmailErr">Please enter a valid email address.</div>
+  </div>
+  <button class="btn-login" id="loginBtn" onclick="doLogin()">Sign In to Portal →</button>
+  <div class="login-ft">🔒 Secure portal · Singapore Recreation Club · Est. 1883</div>
+</div>
+</div>
+
+<!-- PORTAL -->
+<div id="portal-page">
+<div class="sb-overlay" id="sbOv" onclick="closeSB()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-emb">SRC</div>
+    <div class="sb-brand-txt"><strong>Singapore Rec. Club</strong><span>Member Portal</span></div>
+  </div>
+  <div class="sb-mem">
+    <div class="sb-mem-name" id="sbMemName">—</div>
+    <div class="sb-mem-id" id="sbMemId">—</div>
+    <div class="sb-mem-tier" id="sbMemTier">Full Member</div>
+  </div>
+  <div class="sb-nav" id="sbNav">
+    <!-- Dynamic nav items -->
+  </div>
+  <div class="sb-ft">
+    <div class="sb-quota">
+      <div class="sb-quota-lbl" id="sbQuotaLbl">Guest Quota</div>
+      <div class="sb-quota-bar"><div class="sb-quota-fill" id="sbQuotaFill" style="width:0%"></div></div>
+      <div class="sb-quota-txt" id="sbQuotaText">Loading…</div>
+    </div>
+    <div class="sb-logout" onclick="doLogout()">🚪 &nbsp;Sign Out</div>
+  </div>
+</div>
+
+<div class="main">
+  <!-- Wibiz Live Status Strip -->
+  <div class="ghl-strip" id="ghlStrip">
+    <div class="ghl-left">
+      <div class="ghl-dot pulse" id="ghlDot"></div>
+      <span class="ghl-label" id="ghlLabel"><strong>Singapore Recreation Club</strong> · Wibiz Dashboard</span>
+    </div>
+    <span class="ghl-ref" id="ghlRef"></span>
+  </div>
+
+  <div class="topbar">
+    <div class="tb-left">
+      <button class="hamburger" onclick="toggleSB()">☰</button>
+      <div><div class="tb-title" id="pageTitle">Dashboard</div><div class="tb-date" id="pageDate"></div></div>
+    </div>
+    <div class="tb-right">
+      <div class="notif-wrap">
+        <div class="notif-btn" onclick="toggleNotifPanel()" id="notifBtn">🔔
+          <span class="notif-count hidden" id="notifCount">0</span>
+        </div>
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-panel-hd">
+            <h4>Notifications</h4>
+            <span class="notif-mark-all" onclick="markAllRead()">Mark all read</span>
+          </div>
+          <div class="notif-list" id="notifList"></div>
+        </div>
+      </div>
+      <button class="btn btn-g btn-sm" onclick="go('bookfacility',null,'Book Facility')">+ New Booking</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="screen-dashboard" class="screen active">
+  <div class="content">
+    <div class="hero">
+      <div class="wf-status"><div class="wf-dot"></div><span>Singapore Recreation Club · Est. 1883 · Member Portal v2</span></div>
+      <h2>Welcome back, <span id="heroName">—</span> 👋</h2>
+      <p id="heroSub">Your club, at your fingertips.</p>
+      <div class="hero-stats">
+        <div class="hs"><div class="hs-n" id="statUpcoming">0</div><div class="hs-l">Upcoming Bookings</div></div>
+        <div class="hs"><div class="hs-n" id="statGuests">0</div><div class="hs-l">Guest Visits Used</div></div>
+        <div class="hs"><div class="hs-n" id="statCredit">S$0</div><div class="hs-l">Club Credit</div></div>
+        <div class="hs"><div class="hs-n" id="statVisits">0</div><div class="hs-l">Visits This Month</div></div>
+      </div>
+    </div>
+    <div class="qa-grid">
+      <div class="qa" onclick="go('bookfacility',null,'Book Facility')"><div class="qa-ico">🏅</div><div class="qa-t">Book Facility</div><div class="qa-s">Tennis, Squash, Gym</div></div>
+      <div class="qa" onclick="go('bookdining',null,'Dining Reservation')"><div class="qa-ico">🍽️</div><div class="qa-t">Dining Reservation</div><div class="qa-s">Le Mansion, Barker's &amp; Oasis</div></div>
+      <div class="qa" onclick="go('guests',null,'Register Guests')"><div class="qa-ico">👥</div><div class="qa-t">Register Guests</div><div class="qa-s" id="qaGuestsRemaining">4 visits remaining</div></div>
+    </div>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-hd"><h3>Upcoming Bookings</h3><a onclick="go('bookings',null,'My Bookings')">View all →</a></div>
+        <div id="dashUpcomingList"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-hd"><h3>Notifications</h3><span class="act" onclick="markAllRead()">Mark all read</span></div>
+        <div id="dashNotifList"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- BOOK FACILITY -->
+  <div id="screen-bookfacility" class="screen">
+  <div class="content">
+    <div style="display:flex;align-items:center;gap:0;margin-bottom:28px;max-width:640px">
+      <div class="wiz-step active" id="fac-s1"><span class="wiz-n">1</span><span class="wiz-l">Select Facility</span></div>
+      <div class="wiz-line"></div>
+      <div class="wiz-step" id="fac-s2"><span class="wiz-n">2</span><span class="wiz-l">Date &amp; Time</span></div>
+      <div class="wiz-line"></div>
+      <div class="wiz-step" id="fac-s3"><span class="wiz-n">3</span><span class="wiz-l">Add Guests</span></div>
+      <div class="wiz-line"></div>
+      <div class="wiz-step" id="fac-s4"><span class="wiz-n">4</span><span class="wiz-l">Confirm</span></div>
+    </div>
+    <div id="fac-step1">
+      <div class="s-hd"><h3>Select a Facility</h3><p>Bookings up to 7 days in advance. 60-minute slots. Cancellation free if &gt;24h before slot.</p></div>
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:680px">
+        <div class="fac-list-item" onclick="facSelectFacility('Tennis Court 1','🎾','tennis')"><div class="fli-ico">🎾</div><div class="fli-info"><div class="fli-name">Tennis Court 1</div><div class="fli-meta">Sport · 07:00–22:00 · 60-min slots · Max 4 guests</div></div><div class="fli-arr">›</div></div>
+        <div class="fac-list-item" onclick="facSelectFacility('Tennis Court 2','🎾','tennis')"><div class="fli-ico">🎾</div><div class="fli-info"><div class="fli-name">Tennis Court 2</div><div class="fli-meta">Sport · 07:00–22:00 · 60-min slots · Max 4 guests</div></div><div class="fli-arr">›</div></div>
+        <div class="fac-list-item" onclick="facSelectFacility('Tennis Court 3','🎾','tennis')"><div class="fli-ico">🎾</div><div class="fli-info"><div class="fli-name">Tennis Court 3</div><div class="fli-meta">Sport · 07:00–22:00 · 60-min slots · Max 4 guests</div></div><div class="fli-arr">›</div></div>
+        <div class="fac-list-item" onclick="facSelectFacility('Tennis Court 4','🎾','tennis')"><div class="fli-ico">🎾</div><div class="fli-info"><div class="fli-name">Tennis Court 4</div><div class="fli-meta">Sport · 07:00–22:00 · 60-min slots · Max 4 guests</div></div><div class="fli-arr">›</div></div>
+        <div class="fac-list-item" onclick="facSelectFacility('Squash Court 1','🏸','squash')"><div class="fli-ico">🏸</div><div class="fli-info"><div class="fli-name">Squash Court 1</div><div class="fli-meta">Sport · 07:00–22:00 · 60-min slots · Max 2 guests</div></div><div class="fli-arr">›</div></div>
+        <div class="fac-list-item" onclick="facSelectFacility('Squash Court 2','🏸','squash')"><div class="fli-ico">🏸</div><div class="fli-info"><div class="fli-name">Squash Court 2</div><div class="fli-meta">Sport · 07:00–22:00 · 60-min slots · Max 2 guests</div></div><div class="fli-arr">›</div></div>
+        <div class="fac-list-item" onclick="facSelectFacility('Gym','💪','gym')"><div class="fli-ico">💪</div><div class="fli-info"><div class="fli-name">Gym</div><div class="fli-meta">Fitness · 06:00–22:00 · 60-min sessions · 20-person cap</div></div><div class="fli-arr">›</div></div>
+      </div>
+      <div style="margin-top:16px;background:white;border-radius:12px;padding:14px 18px;border:1px solid var(--border);font-size:13px;color:var(--muted)">
+        <strong style="color:var(--navy)">Guest fee:</strong> S$20.00 per guest per visit for tennis, squash &amp; gym.
+      </div>
+    </div>
+    <div id="fac-step2" style="display:none;max-width:560px">
+      <div class="s-hd"><h3>Choose Date &amp; Time</h3><p id="fac-s2-subtitle">Select your preferred slot. Bookings within 7 days only.</p></div>
+      <div class="info-card">
+        <div class="form-group">
+          <label class="form-label">Visit Date <span>(today+1 to today+7 only)</span></label>
+          <input class="form-input" id="fac-date" type="date">
+          <div class="form-err" id="fac-date-err">Please select a date between tomorrow and 7 days ahead.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Start Time</label>
+          <select class="form-select" id="fac-time">
+            <option value="07:00">7:00 AM</option><option value="08:00">8:00 AM</option><option value="09:00">9:00 AM</option>
+            <option value="10:00">10:00 AM</option><option value="11:00">11:00 AM</option><option value="12:00">12:00 PM</option>
+            <option value="13:00">1:00 PM</option><option value="14:00">2:00 PM</option><option value="15:00">3:00 PM</option>
+            <option value="16:00">4:00 PM</option><option value="17:00">5:00 PM</option><option value="18:00">6:00 PM</option>
+            <option value="19:00">7:00 PM</option><option value="20:00">8:00 PM</option>
+          </select>
+        </div>
+        <div style="background:var(--cream);border-radius:8px;padding:10px 14px;font-size:12.5px;color:var(--muted);margin-bottom:4px">⏱ All slots are fixed <strong style="color:var(--navy)">60 minutes</strong>. Same-day bookings are walk-in only.</div>
+        <div class="btn-row"><button class="btn btn-o" onclick="facGoStep(1)">← Back</button><button class="btn btn-g" onclick="facStep2Next()">Next: Add Guests →</button></div>
+      </div>
+    </div>
+    <div id="fac-step3" style="display:none;max-width:560px">
+      <div class="s-hd"><h3>Add Guests <span style="font-size:15px;font-weight:400;color:var(--muted)">(Optional)</span></h3><p>Guest fee: <strong>S$20 per guest</strong> for this facility. Max 4 guests per booking.</p></div>
+      <div class="info-card">
+        <div class="form-group"><label class="form-label">Number of Guests</label>
+          <select class="form-select" id="fac-guests"><option value="0">No guests (member only)</option><option value="1">1 guest — S$20</option><option value="2">2 guests — S$40</option><option value="3">3 guests — S$60</option><option value="4">4 guests — S$80</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests <span>(Optional)</span></label><input class="form-input" id="fac-notes" placeholder="e.g. Equipment rental, locker request…"></div>
+        <div class="btn-row"><button class="btn btn-o" onclick="facGoStep(2)">← Back</button><button class="btn btn-g" onclick="facGoStep(4)">Review Booking →</button></div>
+      </div>
+    </div>
+    <div id="fac-step4" style="display:none;max-width:560px">
+      <div class="s-hd"><h3>Confirm Booking</h3><p>Review your booking details before confirming.</p></div>
+      <div class="info-card" style="margin-bottom:16px">
+        <div class="d-row"><span class="dr-l">Facility</span><span class="dr-v" id="fac-rev-name"></span></div>
+        <div class="d-row"><span class="dr-l">Date</span><span class="dr-v" id="fac-rev-date"></span></div>
+        <div class="d-row"><span class="dr-l">Time</span><span class="dr-v" id="fac-rev-time"></span></div>
+        <div class="d-row"><span class="dr-l">Duration</span><span class="dr-v">60 minutes</span></div>
+        <div class="d-row"><span class="dr-l">Guests</span><span class="dr-v" id="fac-rev-guests"></span></div>
+        <div class="d-row"><span class="dr-l">Guest Fee</span><span class="dr-v" id="fac-rev-fee" style="color:var(--gold);font-weight:700"></span></div>
+        <div class="d-row" style="border-bottom:none"><span class="dr-l">Member</span><span class="dr-v" id="fac-rev-member">—</span></div>
+      </div>
+      <div style="background:var(--cream);border-radius:10px;padding:13px 16px;font-size:13px;color:var(--muted);margin-bottom:18px">⚠️ Free cancellation up to <strong style="color:var(--navy)">24 hours before</strong> slot. Late cancellation policy applies after that.</div>
+      <div id="fac-confirming" style="display:none;text-align:center;padding:14px;color:var(--muted);font-size:14px">⏳ Submitting to Wibiz…</div>
+      <div class="btn-row"><button class="btn btn-o" onclick="facGoStep(3)">← Back</button><button class="btn btn-g" id="fac-confirm-btn" onclick="facConfirm()">Confirm Booking →</button></div>
+    </div>
+  </div>
+  </div>
+
+  <!-- DINING -->
+  <div id="screen-bookdining" class="screen">
+  <div class="content">
+    <div style="display:flex;align-items:center;gap:0;margin-bottom:28px;max-width:640px">
+      <div class="wiz-step active" id="din-s1"><span class="wiz-n">1</span><span class="wiz-l">Select Venue</span></div>
+      <div class="wiz-line"></div>
+      <div class="wiz-step" id="din-s2"><span class="wiz-n">2</span><span class="wiz-l">Date &amp; Time</span></div>
+      <div class="wiz-line"></div>
+      <div class="wiz-step" id="din-s3"><span class="wiz-n">3</span><span class="wiz-l">Party Details</span></div>
+      <div class="wiz-line"></div>
+      <div class="wiz-step" id="din-s4"><span class="wiz-n">4</span><span class="wiz-l">Confirm</span></div>
+    </div>
+    <div id="din-step1">
+      <div class="s-hd"><h3>Select a Dining Venue</h3><p>Maximum 4 pax per booking. Same-day is walk-in only.</p></div>
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:680px">
+        <div class="fac-list-item" onclick="dinSelectVenue('Le Mansion','🍽️','le_mansion','Lunch 12:00–14:30 · Dinner 18:30–21:30')">
+          <div class="fli-ico">🍽️</div>
+          <div class="fli-info"><div class="fli-name">Le Mansion</div><div class="fli-meta">Lunch 12:00–14:30 · Dinner 18:30–21:30 · Max 4 pax · 15 slots/shift</div></div>
+          <div class="fli-arr">›</div>
+        </div>
+        <div class="fac-list-item" onclick="dinSelectVenue('Barker\'s Lounge','🍺','barkerslounge','Evening 17:00–23:00')">
+          <div class="fli-ico">🍺</div>
+          <div class="fli-info"><div class="fli-name">Barker's Lounge</div><div class="fli-meta">Evening 17:00–23:00 · Max 4 pax · 10 slots/session</div></div>
+          <div class="fli-arr">›</div>
+        </div>
+        <div class="fac-list-item" onclick="dinSelectVenue('Oasis @ Padang','🌿','oasis','All-day 11:00–21:00')">
+          <div class="fli-ico">🌿</div>
+          <div class="fli-info"><div class="fli-name">Oasis @ Padang</div><div class="fli-meta">All-day 11:00–21:00 · Max 4 pax · 12 slots/day</div></div>
+          <div class="fli-arr">›</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;background:#fff9f0;border-radius:12px;padding:14px 18px;border:1px solid rgba(173,151,79,.3);font-size:13px;color:#7a6520">
+        ℹ️ Groups over 4 pax: please make a second booking for remaining guests. Same-day advance bookings not accepted — walk-in only.
+      </div>
+    </div>
+    <div id="din-step2" style="display:none;max-width:560px">
+      <div class="s-hd"><h3>Choose Date &amp; Time</h3><p id="din-s2-sub">Select your preferred date and time slot.</p></div>
+      <div class="info-card">
+        <div class="form-group">
+          <label class="form-label">Visit Date <span>(tomorrow to +7 days)</span></label>
+          <input class="form-input" id="din-date" type="date">
+          <div class="form-err" id="din-date-err">Please select a date between tomorrow and 7 days ahead.</div>
+        </div>
+        <div class="form-group"><label class="form-label">Time Slot</label><select class="form-select" id="din-time"></select></div>
+        <div style="background:var(--cream);border-radius:8px;padding:10px 14px;font-size:12.5px;color:var(--muted);margin-bottom:4px">⏱ Fixed slots. Advance booking up to 7 days. Same-day is walk-in only.</div>
+        <div class="btn-row"><button class="btn btn-o" onclick="dinGoStep(1)">← Back</button><button class="btn btn-g" onclick="dinStep2Next()">Next: Party Details →</button></div>
+      </div>
+    </div>
+    <div id="din-step3" style="display:none;max-width:560px">
+      <div class="s-hd"><h3>Party Details</h3></div>
+      <div class="info-card">
+        <div class="form-group"><label class="form-label">Party Size <span>(Max 4 pax)</span></label>
+          <select class="form-select" id="din-pax"><option value="1">1 person</option><option value="2">2 persons</option><option value="3">3 persons</option><option value="4">4 persons</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Table Preference</label>
+          <select class="form-select" id="din-table"><option value="Standard">Standard table</option><option value="Window">Window seat</option><option value="Bar">Bar seating</option><option value="No preference">No preference</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests <span>(Optional)</span></label><input class="form-input" id="din-notes" placeholder="Dietary requirements, occasion, allergies…"></div>
+        <div class="btn-row"><button class="btn btn-o" onclick="dinGoStep(2)">← Back</button><button class="btn btn-g" onclick="dinGoStep(4)">Review Reservation →</button></div>
+      </div>
+    </div>
+    <div id="din-step4" style="display:none;max-width:560px">
+      <div class="s-hd"><h3>Confirm Reservation</h3></div>
+      <div class="info-card" style="margin-bottom:16px">
+        <div class="d-row"><span class="dr-l">Venue</span><span class="dr-v" id="din-rev-venue"></span></div>
+        <div class="d-row"><span class="dr-l">Date</span><span class="dr-v" id="din-rev-date"></span></div>
+        <div class="d-row"><span class="dr-l">Time</span><span class="dr-v" id="din-rev-time"></span></div>
+        <div class="d-row"><span class="dr-l">Duration</span><span class="dr-v">60 minutes</span></div>
+        <div class="d-row"><span class="dr-l">Party Size</span><span class="dr-v" id="din-rev-pax"></span></div>
+        <div class="d-row"><span class="dr-l">Table Preference</span><span class="dr-v" id="din-rev-table"></span></div>
+        <div class="d-row" style="border-bottom:none"><span class="dr-l">Member</span><span class="dr-v" id="din-rev-member">—</span></div>
+      </div>
+      <div id="din-confirming" style="display:none;text-align:center;padding:14px;color:var(--muted);font-size:14px">⏳ Submitting to GHL…</div>
+      <div class="btn-row"><button class="btn btn-o" onclick="dinGoStep(3)">← Back</button><button class="btn btn-g" id="din-confirm-btn" onclick="dinConfirm()">Confirm Reservation →</button></div>
+    </div>
+  </div>
+  </div>
+
+  <!-- REGISTER GUESTS -->
+  <div id="screen-guests" class="screen">
+  <div class="content">
+    <div class="s-hd"><h3>Register Guests</h3><p>Guest fee: <strong>S$20 per visit</strong> for tennis, squash &amp; gym. Same guest maximum 2 visits per month.</p></div>
+    <div class="alert-strip" id="guestQuotaAlert">👥 Loading quota…</div>
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:20px">
+      <div class="info-card">
+        <h4>Guest Details</h4>
+        <div class="field-grid">
+          <div class="form-group">
+            <label class="form-label">Guest Full Name</label>
+            <input class="form-input" id="guestName" placeholder="Full name">
+            <div class="form-err" id="guestNameErr">Guest name is required.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Guest Email <span>(for QR delivery)</span></label>
+            <input class="form-input" id="guestEmail" placeholder="guest@email.com" type="email">
+            <div class="form-err" id="guestEmailErr">Valid email address required.</div>
+          </div>
+          <div class="form-group"><label class="form-label">Guest Phone <span>(Optional)</span></label><input class="form-input" id="guestPhone" placeholder="+65 XXXX XXXX"></div>
+          <div class="form-group">
+            <label class="form-label">Visit Date</label>
+            <input class="form-input" id="guestDate" type="date">
+            <div class="form-err" id="guestDateErr">Visit date is required.</div>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Visit Purpose</label>
+          <select class="form-select" id="guestPurpose"><option value="Facility entry">Facility entry (tennis, squash, gym)</option><option value="Dining guest">Dining guest</option><option value="Social visit">Social visit</option><option value="Sports activity">Sports activity</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Facilities Accessing</label>
+          <select class="form-select" id="guestFacility"><option value="tennis">Tennis Courts</option><option value="squash">Squash Courts</option><option value="gym">Gym</option><option value="dining_only">Dining Only</option><option value="general_access">General Access (free)</option></select>
+        </div>
+        <div id="guestSelfErr" style="display:none;background:var(--danger-bg);color:var(--danger);border-radius:8px;padding:11px 14px;font-size:13px;margin-bottom:14px">⚠️ You cannot register yourself as a guest.</div>
+        <div id="guestQuotaErr" style="display:none;background:var(--danger-bg);color:var(--danger);border-radius:8px;padding:11px 14px;font-size:13px;margin-bottom:14px">⚠️ Your monthly guest quota has been exhausted. Resets on 1st of next month.</div>
+        <button class="btn btn-g btn-fw" id="issueGPBtn" onclick="issueGP()">Issue Guest Pass &amp; Send QR →</button>
+      </div>
+      <div>
+        <div class="info-card" style="margin-bottom:16px">
+          <h4>Monthly Quota</h4>
+          <div style="background:var(--cream);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px">
+            <div style="font-size:36px;font-weight:700;color:var(--navy);font-family:'Playfair Display',serif" id="quotaUsedBig">0</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px" id="quotaOfBig">of 4 visits used</div>
+            <div style="background:var(--border);height:6px;border-radius:10px;margin:12px 0;overflow:hidden"><div style="background:var(--gold);height:100%;border-radius:10px;width:0%" id="quotaBarBig"></div></div>
+            <div style="font-size:12px;color:var(--success);font-weight:600" id="quotaRemBig">4 remaining</div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6">Quota resets on the 1st of each month. Same guest may not visit more than <strong>twice per month</strong>.</div>
+        </div>
+        <div class="info-card">
+          <h4>Recent Guests</h4>
+          <div id="recentGuestsList"><div style="padding:12px 0;font-size:13px;color:var(--muted)">No recent guests.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- GUEST PASSES -->
+  <div id="screen-guestpasses" class="screen">
+  <div class="content">
+    <div class="s-hd"><h3>My Guest Passes</h3><p>All issued guest passes. Click any pass to view reference details.</p></div>
+    <div class="panel">
+      <div class="panel-hd"><h3 id="gpPanelHd">Issued Passes</h3><span class="act" onclick="go('guests',null,'Register Guests')">+ New Pass</span></div>
+      <div id="guestPassList"><div style="padding:28px;text-align:center;color:var(--muted);font-size:13px">No guest passes issued yet.</div></div>
+    </div>
+  </div>
+  </div>
+
+  <!-- MY BOOKINGS -->
+  <div id="screen-bookings" class="screen">
+  <div class="content">
+    <div class="s-hd"><h3>My Bookings</h3><p>All your facility and dining bookings. Click any booking to view details or cancel.</p></div>
+    <div class="filter-row">
+      <button class="fbtn active" onclick="filterBK(this,'all')">All</button>
+      <button class="fbtn" onclick="filterBK(this,'upcoming')">Upcoming</button>
+      <button class="fbtn" onclick="filterBK(this,'facility')">Facility</button>
+      <button class="fbtn" onclick="filterBK(this,'dining')">Dining</button>
+      <button class="fbtn" onclick="filterBK(this,'cancelled')">Cancelled</button>
+      <button class="fbtn" onclick="filterBK(this,'past')">Past</button>
+    </div>
+    <div class="panel"><div id="allBookingsList"></div></div>
+  </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div id="screen-profile" class="screen">
+  <div class="content">
+    <div class="s-hd"><h3>My Profile</h3><p>Your membership information.</p></div>
+    <div class="profile-grid">
+      <div>
+        <div class="p-card">
+          <div class="p-av" id="profileInitials">—</div>
+          <div class="p-name" id="profileName">—</div>
+          <div class="p-id" id="profileId">—</div>
+          <div class="p-stats">
+            <div class="ps"><div class="ps-n" id="profVisits">0</div><div class="ps-l">Visits</div></div>
+            <div class="ps"><div class="ps-n" id="profGuests">0</div><div class="ps-l">Guests</div></div>
+            <div class="ps"><div class="ps-n" id="profYears">—</div><div class="ps-l">Years</div></div>
+          </div>
+          <div class="p-meta">
+            <div class="p-mr">🏅 Full Member</div>
+            <div class="p-mr">📍 Singapore Recreation Club</div>
+            <div class="p-mr">✅ Account Active</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="info-card">
+          <h4>Personal Information</h4>
+          <div class="field-grid">
+            <div class="form-group">
+              <label class="form-label">First Name <span>*</span></label>
+              <input class="form-input" id="pfFirstName">
+              <div class="form-err" id="pfFirstNameErr">First name is required.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input class="form-input" id="pfLastName">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address <span>*</span></label>
+              <input class="form-input" id="pfEmail" type="email">
+              <div class="form-err" id="pfEmailErr">Valid email address required.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mobile Number</label>
+              <input class="form-input" id="pfPhone" placeholder="+65 XXXX XXXX">
+              <div class="form-err" id="pfPhoneErr">Enter a valid phone number.</div>
+            </div>
+          </div>
+          <div style="background:var(--cream);border-radius:8px;padding:10px 14px;font-size:12.5px;color:var(--muted);margin-bottom:14px">ℹ️ Membership ID and tier can only be changed by club admin.</div>
+          <div class="btn-row">
+            <button class="btn btn-o" onclick="cancelProfile()">Cancel</button>
+            <button class="btn btn-g" onclick="saveProfile()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- BOOKING CONFIRMED -->
+  <div id="screen-bookconfirm" class="screen">
+  <div class="content" style="max-width:520px;margin:0 auto">
+    <div style="margin-bottom:20px"><button class="btn btn-o btn-sm" onclick="go('bookings',null,'My Bookings')">← Back to Bookings</button></div>
+    <div style="background:white;border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--border);margin-bottom:16px">
+      <div style="background:var(--success);padding:20px 24px;display:flex;align-items:center;gap:14px">
+        <div style="font-size:32px">✅</div>
+        <div><div style="font-size:17px;font-weight:700;color:white">Booking Confirmed</div><div style="font-size:13px;color:rgba(255,255,255,.8);margin-top:2px">Booking confirmed · You will receive a confirmation shortly</div></div>
+      </div>
+      <div style="padding:20px 24px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px">
+          <div style="width:44px;height:44px;background:var(--cream);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px" id="bc-icon">🍽️</div>
+          <div><div style="font-size:17px;font-weight:600;color:var(--navy)" id="bc-name">—</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Date</div><div style="font-size:14px;font-weight:600;color:var(--navy)" id="bc-date">—</div></div>
+          <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Time</div><div style="font-size:14px;font-weight:600;color:var(--navy)" id="bc-time">—</div></div>
+          <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Party / Guests</div><div style="font-size:14px;font-weight:600;color:var(--navy)" id="bc-pax">—</div></div>
+          <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Booked On</div><div style="font-size:13px;font-weight:600;color:var(--navy)" id="bc-booked-at">—</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="bk-ref-display">
+      <div class="bk-ref-label">Your Booking Reference</div>
+      <div class="bk-ref-code" id="bc-ref-code">—</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px" id="bc-ref-hint">Present this reference at the facility entrance.</div>
+      <button class="bk-ref-copy" onclick="copyRef()">📋 Copy Reference</button>
+    </div>
+    <div style="background:white;border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;border:1px solid var(--border)">
+      <span style="font-size:13px;color:var(--success);font-weight:600">✅ Booking submitted · Confirmation on its way</span>
+    </div>
+    <button class="btn btn-d btn-fw" style="border-radius:12px;padding:14px" onclick="confirmCancelPrompt()">Cancel This Booking</button>
+  </div>
+  </div>
+
+  <!-- MANAGEMENT DASHBOARD -->
+  <div id="screen-management-dashboard" class="screen">
+  <div class="content">
+    <div class="hero" style="background:linear-gradient(135deg,#1a3060 0%,#0a162b 100%)">
+      <div class="wf-status"><div class="wf-dot"></div><span>Wibiz Dashboard · Management Hub</span></div>
+      <h2>Management Overview</h2>
+      <p>Real-time club performance and member engagement.</p>
+      <div class="hero-stats">
+        <div class="hs"><div class="hs-n">1,284</div><div class="hs-l">Total Members</div></div>
+        <div class="hs"><div class="hs-n">42</div><div class="hs-l">Today's Bookings</div></div>
+        <div class="hs"><div class="hs-n">156</div><div class="hs-l">Guest Visits (MTD)</div></div>
+        <div class="hs"><div class="hs-n">S$12.4k</div><div class="hs-l">Monthly Revenue</div></div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-hd"><h3>Recent Member Activity</h3><a onclick="go('members',null,'Members')">Directory →</a></div>
+        <div id="mgmtActivityList"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-hd"><h3>Pending Requests</h3></div>
+        <div id="mgmtPendingList"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- UNIFIED INBOX (CONVERSATIONS) -->
+  <div id="screen-analytics" class="screen"> <!-- Reusing analytics ID for demo inbox as per role config -->
+  <div class="content">
+    <div class="s-hd"><h3>Wibiz Conversations</h3><p>Unified inbox for all member inquiries across SMS, WhatsApp, and Email.</p></div>
+    <div class="panel" style="height:600px;display:flex">
+      <div style="width:300px;border-right:1px solid var(--border);overflow-y:auto" id="inboxList">
+        <!-- Sidebar items -->
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column" id="inboxChat">
+        <div style="padding:48px;text-align:center;color:var(--muted);margin:auto">
+          <div style="font-size:48px;margin-bottom:16px">💬</div>
+          <h4>Select a conversation</h4>
+          <p>Choose a member from the left to view their message history.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- STAFF DASHBOARD -->
+  <div id="screen-staff-dashboard" class="screen">
+  <div class="content">
+    <div class="hero" style="background:linear-gradient(135deg,var(--navy) 0%,#1a3060 100%)">
+      <div class="wf-status"><div class="wf-dot"></div><span>Wibiz Dashboard · Staff Operations</span></div>
+      <h2>Staff Operations</h2>
+      <p>Manage member check-ins and facility operations for today and tomorrow.</p>
+    </div>
+    
+    <div class="s-hd"><h3>Operational Schedule</h3><p>Real-time view of bookings across all facilities.</p></div>
+    
+    <div class="filter-row">
+      <button class="fbtn active" id="staff-btn-today" onclick="renderStaffSchedule('today')">Today</button>
+      <button class="fbtn" id="staff-btn-tomorrow" onclick="renderStaffSchedule('tomorrow')">Tomorrow</button>
+      <button class="fbtn" id="staff-btn-week" onclick="renderStaffSchedule('week')">Next 7 Days</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-hd"><h3 id="staffScheduleTitle">Today's Schedule</h3></div>
+      <div id="staffScheduleList"></div>
+    </div>
+  </div>
+  </div>
+
+  <!-- STAFF DASHBOARD -->
+  <div id="screen-staff-dashboard" class="screen">
+  ... (rest of staff dashboard content) ...
+  </div>
+
+  <!-- MEMBER LOOKUP -->
+  <div id="screen-lookup" class="screen">
+  <div class="content">
+    <div class="s-hd"><h3>Member Lookup</h3><p>Search for members by name, ID, or email to view status and active bookings.</p></div>
+    <div class="panel" style="padding:24px">
+      <div style="display:flex;gap:12px;margin-bottom:24px">
+        <input type="text" class="fi" id="lookupQuery" placeholder="Search name, SRC ID..." style="flex:1">
+        <button class="btn btn-g" onclick="doMemberLookup()">Search →</button>
+      </div>
+      <div id="lookupResults">
+        <div style="text-align:center;padding:48px;color:var(--muted)">
+          Enter a search term above to find member details.
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- CHECK-IN INTERFACE -->
+  <div id="screen-checkin" class="screen">
+  <div class="content">
+    <div class="s-hd"><h3>Member Check-in</h3><p>Verify booking reference and record attendance.</p></div>
+    <div style="max-width:500px;margin:0 auto">
+      <div class="panel" style="padding:24px;text-align:center">
+        <div style="font-size:48px;margin-bottom:16px">🎟️</div>
+        <div class="form-group">
+          <label class="form-label">Enter Booking Reference</label>
+          <input type="text" class="fi" id="checkinRef" placeholder="e.g. BK-20260323-ABCD" style="text-align:center;font-family:monospace;font-size:18px;letter-spacing:1px">
+        </div>
+        <button class="btn btn-g btn-fw" onclick="doCheckin()">Validate & Check-in →</button>
+        <div id="checkinStatus" style="margin-top:20px;display:none"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- GENERIC NOT IMPLEMENTED -->
+  <div id="screen-not-implemented" class="screen">
+  <div class="content">
+    <div class="s-hd"><h3>Module Under Development</h3><p>This module is part of the next phase of the SRC Portal rollout.</p></div>
+    <div class="info-card" style="text-align:center;padding:48px 24px">
+      <div style="font-size:48px;margin-bottom:16px">🛠️</div>
+      <h4 style="border-bottom:none;margin-bottom:8px">Coming Soon</h4>
+      <p style="color:var(--muted);max-width:400px;margin:0 auto">We are currently building this feature to provide a better experience for SRC Staff and Management.</p>
+      <button class="btn btn-o" style="margin-top:24px" onclick="go('dashboard',null,'Dashboard')">Back to Dashboard</button>
+    </div>
+  </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /portal-page -->
+
+<!-- MODALS -->
+<div class="modal-ov" id="bkModal">
+  <div class="modal">
+    <div class="modal-hd"><h3 id="bm-title">Booking Details</h3><button class="modal-x" onclick="closeM('bkModal')">✕</button></div>
+    <div class="d-row"><span class="dr-l">Booking</span><span class="dr-v" id="bm-name"></span></div>
+    <div class="d-row"><span class="dr-l">Date</span><span class="dr-v" id="bm-date"></span></div>
+    <div class="d-row"><span class="dr-l">Time</span><span class="dr-v" id="bm-time"></span></div>
+    <div class="d-row"><span class="dr-l">Guests</span><span class="dr-v" id="bm-guests"></span></div>
+    <div class="d-row"><span class="dr-l">Status</span><span class="dr-v" id="bm-status"></span></div>
+    <div class="modal-ref-box">
+      <div class="modal-ref-lbl">Booking Reference</div>
+      <div class="modal-ref-val" id="bm-ref">—</div>
+      <button class="modal-ref-copy" onclick="copyText(document.getElementById('bm-ref').textContent)">📋 Copy</button>
+    </div>
+    <div class="modal-bookedon"><span>🕐 Booked on</span><span id="bm-bookedat">—</span></div>
+    <div class="cancel-btn-wrap" id="bm-cancel-wrap">
+      <button class="btn btn-d btn-fw" onclick="cancelFromModal()">Cancel This Booking</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="gpModal">
+  <div class="modal">
+    <div class="modal-hd"><h3 id="gpm-title">Guest Pass</h3><button class="modal-x" onclick="closeM('gpModal')">✕</button></div>
+    <div class="d-row"><span class="dr-l">Guest Name</span><span class="dr-v" id="gpm-name"></span></div>
+    <div class="d-row"><span class="dr-l">Visit Date</span><span class="dr-v" id="gpm-date"></span></div>
+    <div class="d-row"><span class="dr-l">Purpose</span><span class="dr-v" id="gpm-type"></span></div>
+    <div class="d-row" style="border-bottom:none"><span class="dr-l">Status</span><span class="dr-v" id="gpm-status"></span></div>
+    <div class="modal-ref-box">
+      <div class="modal-ref-lbl">Pass Reference</div>
+      <div class="modal-ref-val" id="gpm-ref">—</div>
+      <button class="modal-ref-copy" onclick="copyText(document.getElementById('gpm-ref').textContent)">📋 Copy</button>
+    </div>
+    <div class="btn-row"><button class="btn btn-o btn-sm" onclick="closeM('gpModal')">Close</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="gpOKModal">
+  <div class="modal" style="text-align:center;padding:36px 30px">
+    <div style="font-size:52px;margin-bottom:14px">🎟️</div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:8px">Guest Pass Issued!</h3>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:22px;line-height:1.7">QR code entry pass sent to your guest's email.<br>QR code pass sent to your guest. A confirmation will follow shortly.</p>
+    <div class="modal-ref-box" style="margin-bottom:18px">
+      <div class="modal-ref-lbl">Pass Reference</div>
+      <div class="modal-ref-val" id="gpNewRef">—</div>
+      <button class="modal-ref-copy" onclick="copyText(document.getElementById('gpNewRef').textContent)">📋 Copy</button>
+    </div>
+    <button class="btn btn-g" style="width:100%" onclick="closeM('gpOKModal')">Done</button>
+  </div>
+</div>
+
+<!-- CONFIRM DIALOG -->
+<div class="confirm-ov" id="confirmDlg">
+  <div class="confirm-box">
+    <h3 id="confirmTitle">Confirm Action</h3>
+    <p id="confirmMsg">Are you sure?</p>
+    <div class="confirm-btns">
+      <button class="btn btn-o" onclick="closeConfirm()">Go Back</button>
+      <button class="btn btn-d" id="confirmOkBtn">Confirm Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ElevenLabs widget hidden until needed -->
+<!-- <elevenlabs-convai agent-id="agent_8901kkbm4ezwe41v0e7wbv2bxeqf"></elevenlabs-convai>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script> -->
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════
+// WEBHOOKS — exact URLs per action
+// ═══════════════════════════════════
+const WH = {
+  INTAKE:  'https://services.leadconnectorhq.com/hooks/0h4aeb2m1HrDJ0coPb31/webhook-trigger/1a91ca30-02a0-4eea-a81b-be1805ccd095',
+  ISSUER:  'https://services.leadconnectorhq.com/hooks/0h4aeb2m1HrDJ0coPb31/webhook-trigger/70888a71-fb04-4525-b13f-0820e2e07fd8',
+  SCANNER: 'https://services.leadconnectorhq.com/hooks/0h4aeb2m1HrDJ0coPb31/webhook-trigger/de3a09b4-8e4e-4e8e-96b7-2b49e8f9f599',
+  INBOUND: 'https://services.leadconnectorhq.com/hooks/0h4aeb2m1HrDJ0coPb31/webhook-trigger/70888a71-fb04-4525-b13f-0820e2e07fd8',
+};
+
+// ═══════════════════════════════════
+// MEMBER STATE
+// ═══════════════════════════════════
+const MBR = {
+  id:'', name:'', firstName:'', lastName:'', email:'', phone:'',
+  tier:'Full Member', membershipNumber:'',
+  quota:{ used:0, total:4 }, credit:0,
+};
+
+// Known test accounts — exact match required
+const KNOWN_MEMBERS = [
+  { id:'SRC0102', email:'benjamin.ong@src-demo.local', name:'Benjamin Ong', firstName:'Benjamin', lastName:'Ong', quota:4, tier:'ordinary' },
+  { id:'SRC0123', email:'cheryl.lee@src-demo.local',   name:'Cheryl Lee',   firstName:'Cheryl',   lastName:'Lee',  quota:4, tier:'ordinary' },
+  { id:'SRC0300', email:'src@wibiz.ai',                name:'Demo Member',  firstName:'Demo',     lastName:'Member', quota:4, tier:'ordinary' },
+];
+
+let myBookings = [];
+let myGuestPasses = [];
+let notifications = [];
+let currentBKRef = null;
+let currentModalBKRef = null;
+let profileOriginal = {};
+
+const STORAGE_KEY_BK  = 'src_bookings';
+const STORAGE_KEY_GP  = 'src_guestpasses';
+const STORAGE_KEY_NOT = 'src_notifications';
+const STORAGE_KEY_MBR = 'src_member';
+
+// ═══════════════════════════════════
+// PERSISTENCE — localStorage
+// ═══════════════════════════════════
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY_BK,  JSON.stringify(myBookings));
+    localStorage.setItem(STORAGE_KEY_GP,  JSON.stringify(myGuestPasses));
+    localStorage.setItem(STORAGE_KEY_NOT, JSON.stringify(notifications));
+    const mbrData = { id:MBR.id, name:MBR.name, firstName:MBR.firstName, lastName:MBR.lastName,
+      email:MBR.email, phone:MBR.phone, tier:MBR.tier, membershipNumber:MBR.membershipNumber,
+      quota:MBR.quota };
+    localStorage.setItem(STORAGE_KEY_MBR, JSON.stringify(mbrData));
+  } catch(e) { console.warn('localStorage save failed:', e); }
+}
+
+function loadState() {
+  try {
+    const bk  = localStorage.getItem(STORAGE_KEY_BK);
+    const gp  = localStorage.getItem(STORAGE_KEY_GP);
+    const not = localStorage.getItem(STORAGE_KEY_NOT);
+    const mbr = localStorage.getItem(STORAGE_KEY_MBR);
+    if(bk)  myBookings    = JSON.parse(bk);
+    if(gp)  myGuestPasses = JSON.parse(gp);
+    if(not) notifications = JSON.parse(not);
+    if(mbr) {
+      const m = JSON.parse(mbr);
+      Object.assign(MBR, m);
+    }
+  } catch(e) { console.warn('localStorage load failed:', e); }
+}
+
+// ═══════════════════════════════════
+// GHL STRIP
+// ═══════════════════════════════════
+function setGhlStrip(state, label, ref, wfKey) {
+  const strip = document.getElementById('ghlStrip');
+  const dot   = document.getElementById('ghlDot');
+  const lbl   = document.getElementById('ghlLabel');
+  const refEl = document.getElementById('ghlRef');
+  if(!strip) return;
+  strip.className = 'ghl-strip' + (state ? ' '+state : '');
+  dot.className = 'ghl-dot' + (state==='firing'?' orange pulse' : state==='error'?' red' : ' pulse');
+  lbl.innerHTML = label;
+  refEl.textContent = ref || '';
+}
+
+// ═══════════════════════════════════
+// FIRE GHL — corrected field keys per blueprint v2.0
+// ═══════════════════════════════════
+async function fireGHL(url, payload, wfKey) {
+  const ref = payload.visit_id || '';
+  setGhlStrip('firing', '<strong>Singapore Recreation Club</strong> · Processing your request…', ref, null);
+  try {
+    const body = {
+      // Standard GHL contact fields
+      firstName:          MBR.firstName,
+      lastName:           MBR.lastName || '',
+      email:              MBR.email,
+      phone:              MBR.phone || '',
+      // Blueprint v2.0 exact field keys
+      membership_number:  MBR.membershipNumber || MBR.id,
+      booking_full_name:  MBR.name,
+      booking_source:     'form',   // Always 'form' for member portal
+      ...payload,
+      source:             'SRC Member Portal v2',
+      submittedAt:        new Date().toISOString(),
+    };
+    const res = await fetch(url, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    });
+    if(res.ok) {
+      setGhlStrip('success', '<strong>Singapore Recreation Club</strong> · Booking confirmed · Confirmation sent', ref, null);
+      setTimeout(()=>setGhlStrip('','<strong>Singapore Recreation Club</strong> · Member Portal','',null), 5000);
+      return true;
+    } else {
+      setGhlStrip('error', '<strong>Booking could not be submitted</strong> · Please try again or contact the club', ref, null);
+      setTimeout(()=>setGhlStrip('','<strong>Singapore Recreation Club</strong> · Member Portal','',null), 6000);
+      return false;
+    }
+  } catch(e) {
+    setGhlStrip('error','<strong>Connection error</strong> · Please check your connection and try again','',null);
+    setTimeout(()=>setGhlStrip('','<strong>Singapore Recreation Club</strong> · Member Portal','',null), 6000);
+    return false;
+  }
+}
+
+// ═══════════════════════════════════
+// AUTH — strict validation
+// ═══════════════════════════════════
+async function doLogin() {
+  const rawId  = (document.getElementById('loginId')?.value||'').trim();
+  const em     = (document.getElementById('loginEmail')?.value||'').trim().toLowerCase();
+  const errEl  = document.getElementById('loginErr');
+  const errMsg = document.getElementById('loginErrMsg');
+  const btn    = document.getElementById('loginBtn');
+
+  // Clear previous errors
+  errEl.style.display='none';
+  document.getElementById('loginIdErr').style.display='none';
+  document.getElementById('loginEmailErr').style.display='none';
+  document.getElementById('loginId').classList.remove('error');
+  document.getElementById('loginEmail').classList.remove('error');
+
+  let valid = true;
+
+  // Validate membership number
+  if(!rawId) {
+    document.getElementById('loginIdErr').style.display='block';
+    document.getElementById('loginId').classList.add('error');
+    valid = false;
+  }
+
+  // Validate email format
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!em) {
+    document.getElementById('loginEmailErr').textContent='Email address is required.';
+    document.getElementById('loginEmailErr').style.display='block';
+    document.getElementById('loginEmail').classList.add('error');
+    valid = false;
+  } else if(!emailRe.test(em)) {
+    document.getElementById('loginEmailErr').textContent='Please enter a valid email address.';
+    document.getElementById('loginEmailErr').style.display='block';
+    document.getElementById('loginEmail').classList.add('error');
+    valid = false;
+  }
+
+  if(!valid) return;
+
+  const id = rawId.toUpperCase().replace(/[-\s]/g,'');
+  // Show loading state
+  btn.textContent='Signing in…'; btn.disabled=true;
+
+  try {
+    const authRes = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ membershipNumber: id, email: em }),
+    });
+
+    if (!authRes.ok) {
+      throw new Error(`Server returned ${authRes.status}`);
+    }
+
+    const authData = await authRes.json();
+
+    if (!authData.success) {
+      errMsg.textContent = authData.error || 'Invalid membership number or email.';
+      errEl.style.display = 'flex';
+      btn.textContent = 'Sign In to Portal →'; btn.disabled = false;
+      return;
+    }
+
+    const m = authData.member;
+    MBR.name            = m.name;
+    MBR.firstName       = m.firstName;
+    MBR.lastName        = m.lastName;
+    MBR.email           = m.email;
+    MBR.phone           = m.phone || '';
+    MBR.membershipNumber= m.membershipNumber;
+    MBR.id              = 'SRC-' + m.membershipNumber.replace('SRC','').replace(/^0+/,'').padStart(4,'0');
+    MBR.tier            = m.tier;
+    MBR.quota.total     = m.quotaTotal;
+    MBR.quota.used      = m.quotaUsed;
+
+    loadState();
+    saveState();
+
+    document.getElementById('login-page').style.display = 'none';
+    document.getElementById('portal-page').style.display = 'block';
+    initPortal();
+    btn.textContent = 'Sign In to Portal →'; btn.disabled = false;
+    return;
+
+  } catch(e) {
+    // Fallback to KNOWN_MEMBERS if API is unreachable
+    console.warn('Auth API unreachable, using fallback:', e);
+  }
+
+  const known = KNOWN_MEMBERS.find(m => m.id.toUpperCase()===id && m.email.toLowerCase()===em);
+  
+  if(!known) {
+    errMsg.textContent = 'Invalid membership number or email. Please try again.';
+    errEl.style.display='flex';
+    btn.textContent='Sign In to Portal →'; btn.disabled=false;
+    return;
+  }
+
+  btn.textContent='Signing in…'; btn.disabled=true;
+  
+  // Must match a known account exactly OR be a valid format
+  // For production: all unknown accounts are rejected
+  // For demo: valid format (SRC + digits + any known email domain) is accepted
+  const validFmt = /^SRC\d{3,6}$/.test(id) && emailRe.test(em);
+
+  if(known) {
+    MBR.name=known.name; MBR.firstName=known.firstName; MBR.lastName=known.lastName||'';
+    MBR.quota.total=known.quota; MBR.tier=known.tier||'ordinary';
+  } else {
+    const parts = rawId.split(/\s+/);
+    MBR.name='SRC Member'; MBR.firstName='Member'; MBR.lastName='';
+    MBR.quota.total=4; MBR.tier='ordinary';
+  }
+  MBR.membershipNumber = id;
+  MBR.id = 'SRC-'+id.replace('SRC','').replace(/^0+/,'').padStart(4,'0');
+  MBR.email = em;
+
+  // Load persisted state for this member
+  loadState();
+  // If loaded MBR is different member, reset
+  if(MBR.membershipNumber !== id) {
+    myBookings=[]; myGuestPasses=[]; notifications=[];
+    MBR.membershipNumber=id;
+    MBR.quota.used=0;
+  }
+
+  saveState();
+
+  setTimeout(()=>{
+    document.getElementById('login-page').style.display='none';
+    document.getElementById('portal-page').style.display='block';
+    initPortal();
+    btn.textContent='Sign In to Portal →'; btn.disabled=false;
+  }, 500);
+}
+
+async function doLogout() {
+  try { await fetch('/api/logout', { method: 'POST' }); } catch (_) {}
+  localStorage.clear();
+  sessionStorage.clear();
+  document.getElementById('portal-page').style.display = 'none';
+  document.getElementById('login-page').style.display = 'flex';
+  document.getElementById('loginId').value = '';
+  document.getElementById('loginEmail').value = '';
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && document.getElementById('login-page')?.style.display!=='none') doLogin();
+});
+
+window.addEventListener('load', async () => {
+  // Check server-side session cookie first
+  try {
+    const res  = await fetch('/api/validate-session');
+    const data = await res.json();
+    if (data.valid) {
+      // Re-fetch full member data from auth API
+      const authRes = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ membershipNumber: data.memberId, email: data.email }),
+      });
+      const authData = await authRes.json();
+      if (authData.success) {
+        const m = authData.member;
+        MBR.name             = m.name;
+        MBR.firstName        = m.firstName;
+        MBR.lastName         = m.lastName;
+        MBR.email            = m.email;
+        MBR.phone            = m.phone || '';
+        MBR.membershipNumber = m.membershipNumber;
+        MBR.id               = 'SRC-' + m.membershipNumber.replace('SRC','').replace(/^0+/,'').padStart(4,'0');
+        MBR.tier             = m.tier;
+        MBR.quota.total      = m.quotaTotal;
+        MBR.quota.used       = m.quotaUsed;
+        loadState();
+        document.getElementById('login-page').style.display = 'none';
+        document.getElementById('portal-page').style.display = 'block';
+        initPortal();
+        return;
+      }
+    }
+  } catch(e) {}
+
+  // Fall back to localStorage if cookie check fails
+  try {
+    const savedMbr = localStorage.getItem(STORAGE_KEY_MBR);
+    if (savedMbr) {
+      const m = JSON.parse(savedMbr);
+      if (m && m.membershipNumber) {
+        Object.assign(MBR, m);
+        loadState();
+        document.getElementById('login-page').style.display = 'none';
+        document.getElementById('portal-page').style.display = 'block';
+        initPortal();
+      }
+    }
+  } catch(e) {}
+});
+
+// ═══════════════════════════════════
+// DATE HELPERS — enforce 7-day window
+// ═══════════════════════════════════
+function getMinDate() {
+  const d = new Date();
+  d.setDate(d.getDate()+1);
+  return d.toISOString().split('T')[0];
+}
+function getMaxDate() {
+  const d = new Date();
+  d.setDate(d.getDate()+7);
+  return d.toISOString().split('T')[0];
+}
+function isValidBookingDate(dateStr) {
+  if(!dateStr) return false;
+  const min = getMinDate();
+  const max = getMaxDate();
+  return dateStr >= min && dateStr <= max;
+}
+function setDateConstraints(inputId) {
+  const el = document.getElementById(inputId);
+  if(el) { el.min = getMinDate(); el.max = getMaxDate(); }
+}
+
+// ═══════════════════════════════════
+// ROLE CONFIG & DYNAMIC SIDEBAR
+// ═══════════════════════════════════
+const ROLE_CONFIG = {
+  member: {
+    label: 'Member Portal',
+    nav: [
+      { id: 'dashboard', label: 'Dashboard', icon: '🏠', section: 'Main' },
+      { id: 'bookfacility', label: 'Book Facility', icon: '🏅' },
+      { id: 'bookdining', label: 'Dining Reservation', icon: '🍽️' },
+      { id: 'guests', label: 'Register Guests', icon: '👥', section: 'Guests & Passes', badgeId: 'sbQuotaBadge' },
+      { id: 'guestpasses', label: 'My Guest Passes', icon: '🎟️' },
+      { id: 'bookings', label: 'My Bookings', icon: '📋', section: 'My Account' },
+      { id: 'profile', label: 'Profile', icon: '👤' },
+    ]
+  },
+  staff: {
+    label: 'Staff Portal',
+    nav: [
+      { id: 'dashboard', label: 'Staff Dashboard', icon: '📊', section: 'Main' },
+      { id: 'checkin', label: 'Check-in Member', icon: '✅' },
+      { id: 'lookup', label: 'Member Lookup', icon: '🔍' },
+      { id: 'allbookings', label: 'Today\'s Bookings', icon: '📋', section: 'Operations' },
+      { id: 'reports', label: 'Daily Reports', icon: '📈' },
+    ]
+  },
+  management: {
+    label: 'Management Portal',
+    nav: [
+      { id: 'dashboard', label: 'Management Hub', icon: '🏢', section: 'Main' },
+      { id: 'analytics', label: 'Club Analytics', icon: '📈' },
+      { id: 'capacity', label: 'Capacity Settings', icon: '⚙️' },
+      { id: 'members', label: 'Member Directory', icon: '👥', section: 'Administration' },
+      { id: 'settings', label: 'Portal Settings', icon: '🛠️' },
+    ]
+  }
+};
+
+function getRole() {
+  const path = window.location.pathname;
+  if (path.includes('/staff')) return 'staff';
+  if (path.includes('/management')) return 'management';
+  return 'member';
+}
+
+function renderSidebar() {
+  const role = getRole();
+  const config = ROLE_CONFIG[role];
+  const nav = document.getElementById('sbNav');
+  if (!nav) return;
+
+  // Update brand
+  const brandSub = document.querySelector('.sb-brand-txt span');
+  if (brandSub) brandSub.textContent = config.label;
+  
+  const ghlLabel = document.getElementById('ghlLabel');
+  if (ghlLabel) ghlLabel.innerHTML = `<strong>Singapore Recreation Club</strong> · ${config.label}`;
+
+  let html = '';
+  let currentSection = '';
+
+  config.nav.forEach(item => {
+    if (item.section && item.section !== currentSection) {
+      html += `<div class="sb-sec">${item.section}</div>`;
+      currentSection = item.section;
+    }
+    const badge = item.badgeId ? `<span class="sb-badge" id="${item.badgeId}">0/4</span>` : '';
+    html += `<a class="sb-lnk ${item.id==='dashboard'?'active':''}" onclick="go('${item.id}',this,'${item.label}')"><span class="ni">${item.icon}</span>${item.label}${badge}</a>`;
+  });
+
+  nav.innerHTML = html;
+  
+  // Hide member-only elements if not member
+  if (role !== 'member') {
+    const quota = document.querySelector('.sb-ft .sb-quota');
+    if (quota) quota.style.display = 'none';
+    const guestLink = document.querySelector('.qa-grid .qa:last-child'); // Hide Register Guests QA
+    // We'll keep the dashboard simple for now
+  }
+}
+
+// ═══════════════════════════════════
+// INIT PORTAL
+// ═══════════════════════════════════
+function initPortal() {
+  renderSidebar();
+  const now = new Date();
+  document.getElementById('pageDate').textContent =
+    now.toLocaleDateString('en-SG',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const mon = now.toLocaleDateString('en-SG',{month:'long'});
+  const yr  = now.getFullYear();
+  const init = MBR.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+
+  document.getElementById('sbMemName').textContent    = MBR.name;
+  document.getElementById('sbMemId').textContent      = MBR.id;
+  document.getElementById('heroName').textContent     = MBR.firstName;
+  document.getElementById('heroSub').textContent      = `Your club, at your fingertips. ${mon} ${yr}.`;
+  document.getElementById('profileName').textContent  = MBR.name;
+  document.getElementById('profileId').textContent    = MBR.id;
+  document.getElementById('profileInitials').textContent = init;
+  document.getElementById('gpPanelHd').textContent    = `Issued Passes — ${mon} ${yr}`;
+
+  // Profile form
+  const pfFn = document.getElementById('pfFirstName');
+  const pfLn = document.getElementById('pfLastName');
+  const pfEm = document.getElementById('pfEmail');
+  const pfPh = document.getElementById('pfPhone');
+  if(pfFn) pfFn.value = MBR.firstName||'';
+  if(pfLn) pfLn.value = MBR.lastName||'';
+  if(pfEm) pfEm.value = MBR.email||'';
+  if(pfPh) pfPh.value = MBR.phone||'';
+  profileOriginal = { fn:MBR.firstName, ln:MBR.lastName, em:MBR.email, ph:MBR.phone };
+
+  document.getElementById('fac-rev-member').textContent = MBR.name+' · '+MBR.id;
+  document.getElementById('din-rev-member').textContent = MBR.name+' · '+MBR.id;
+  document.getElementById('sbQuotaLbl').textContent     = `Guest Quota — ${mon}`;
+
+  updateQuota(MBR.quota.used, MBR.quota.total);
+  renderBookings();
+  renderDashUpcoming();
+  renderGuestPasses();
+  renderNotifications();
+
+  // Welcome notification (only once per session)
+  if(!notifications.some(n=>n.type==='welcome')) {
+    addNotification('welcome','Welcome back, '+MBR.firstName+'!',
+      'Signed in as '+MBR.id+'. Use the menu to book facilities or register guests.',
+      'info', null, null);
+  }
+
+  // Set date constraints
+  setDateConstraints('fac-date');
+  setDateConstraints('din-date');
+
+  // Guest date — today allowed for same-day registration
+  const gDate = document.getElementById('guestDate');
+  if(gDate) { gDate.min = new Date().toISOString().split('T')[0]; gDate.value = new Date().toISOString().split('T')[0]; }
+
+  document.addEventListener('click', e=>{
+    const wrap  = document.querySelector('.notif-wrap');
+    const panel = document.getElementById('notifPanel');
+    if(wrap && panel && !wrap.contains(e.target)) panel.classList.remove('open');
+  });
+}
+
+function updateQuota(used, total) {
+  const pct = total>0 ? Math.round((used/total)*100) : 0;
+  const rem  = total - used;
+  MBR.quota.used = used; MBR.quota.total = total;
+  document.getElementById('sbQuotaFill').style.width  = pct+'%';
+  document.getElementById('sbQuotaText').textContent  = `${used} of ${total} guest visits used`;
+  document.getElementById('sbQuotaBadge').textContent = `${used}/${total}`;
+  document.getElementById('qaGuestsRemaining').textContent = `${rem} visit${rem!==1?'s':''} remaining`;
+  document.getElementById('statGuests').textContent   = used;
+  const qU = document.getElementById('quotaUsedBig');
+  const qO = document.getElementById('quotaOfBig');
+  const qB = document.getElementById('quotaBarBig');
+  const qR = document.getElementById('quotaRemBig');
+  const qA = document.getElementById('guestQuotaAlert');
+  if(qU) qU.textContent = used;
+  if(qO) qO.textContent = `of ${total} visits used`;
+  if(qB) qB.style.width = pct+'%';
+  if(qR) { qR.textContent = `${rem} visit${rem!==1?'s':''} remaining`; qR.style.color = rem===0?'var(--danger)':'var(--success)'; }
+  if(qA) qA.innerHTML = `👥 <strong>Quota:</strong> ${used} of ${total} guest visits used this month. ${rem} remaining.`;
+  saveState();
+}
+
+// ═══════════════════════════════════
+// NOTIFICATIONS — persist in localStorage
+// ═══════════════════════════════════
+function addNotification(type, title, msg, category, actionType, actionPayload) {
+  const n = {
+    id: 'n'+Date.now()+Math.random().toString(36).slice(2,5),
+    type, title, msg, category: category||'info', actionType, actionPayload,
+    time: new Date().toLocaleTimeString('en-SG',{hour:'2-digit',minute:'2-digit',hour12:true}),
+    read: false
+  };
+  notifications.unshift(n);
+  if(notifications.length > 30) notifications = notifications.slice(0,30);
+  renderNotifications();
+  saveState();
+  if(type!=='welcome') showToast(title, category==='error'?'error':category==='success'?'success':'');
+}
+
+function handleNotifClick(id) {
+  const n = notifications.find(x=>x.id===id);
+  if(!n) return;
+  n.read = true;
+  renderNotifications();
+  saveState();
+  closeNotifPanel();
+  if(!n.actionType) return;
+  if(n.actionType==='open_booking') {
+    const bk = myBookings.find(b=>b.ref===n.actionPayload);
+    if(bk) { go('bookings',null,'My Bookings'); setTimeout(()=>openBK(bk),200); }
+  } else if(n.actionType==='open_guest_pass') {
+    const gp = myGuestPasses.find(g=>g.ref===n.actionPayload);
+    if(gp) { go('guestpasses',null,'My Guest Passes'); setTimeout(()=>openGP(gp),200); }
+  } else if(n.actionType==='nav') {
+    go(n.actionPayload, null, n.actionPayload);
+  }
+}
+
+function renderNotifications() {
+  const unread = notifications.filter(n=>!n.read).length;
+  const badge  = document.getElementById('notifCount');
+  if(badge) { badge.textContent=unread; badge.classList.toggle('hidden', unread===0); }
+
+  const list = document.getElementById('notifList');
+  if(list) {
+    if(!notifications.length) {
+      list.innerHTML = '<div class="notif-empty">No notifications yet.</div>';
+    } else {
+      list.innerHTML = notifications.map(n=>`
+        <div class="notif-item ${n.read?'':'unread'}" onclick="handleNotifClick('${n.id}')">
+          <div class="notif-dot-ind ${n.read?'read':''}"></div>
+          <div class="notif-body">
+            <div class="notif-title">${n.title}</div>
+            <div class="notif-msg">${n.msg.length>70?n.msg.substring(0,70)+'…':n.msg}</div>
+            ${n.actionType?`<div class="notif-action-hint">Tap to ${n.actionType==='open_booking'?'view booking':n.actionType==='open_guest_pass'?'view pass':'go there'} →</div>`:''}
+            <div class="notif-time">${n.time}</div>
+          </div>
+        </div>`).join('');
+    }
+  }
+
+  const dash = document.getElementById('dashNotifList');
+  if(dash) {
+    if(!notifications.length) {
+      dash.innerHTML='<div style="padding:18px;text-align:center;color:var(--muted);font-size:13px">No notifications.</div>';
+    } else {
+      dash.innerHTML = notifications.slice(0,3).map(n=>`
+        <div class="bk-row" onclick="handleNotifClick('${n.id}')">
+          <div class="bk-ico" style="${n.read?'':'background:#fffbef'}">${n.category==='error'?'⚠️':n.category==='success'?'✅':'ℹ️'}</div>
+          <div class="bk-inf">
+            <div class="bk-t" style="display:flex;align-items:center;gap:7px">${n.title}${!n.read?'<span style="width:7px;height:7px;background:var(--gold);border-radius:50%;display:inline-block;flex-shrink:0"></span>':''}</div>
+            <div class="bk-m">${n.msg.length>60?n.msg.substring(0,60)+'…':n.msg}</div>
+          </div>
+          <div class="bk-r"><div class="bk-rd">${n.time}</div></div>
+        </div>`).join('');
+    }
+  }
+}
+
+function markAllRead() {
+  notifications.forEach(n=>n.read=true);
+  renderNotifications();
+  saveState();
+  closeNotifPanel();
+}
+function toggleNotifPanel() { document.getElementById('notifPanel')?.classList.toggle('open'); }
+function closeNotifPanel()  { document.getElementById('notifPanel')?.classList.remove('open'); }
+
+// ═══════════════════════════════════
+// RENDER BOOKINGS
+// ═══════════════════════════════════
+const statusBadge = {
+  confirmed:  '<span class="badge bg">Confirmed</span>',
+  pending:    '<span class="badge by">Pending</span>',
+  checkedin:  '<span class="badge bb">Checked In</span>',
+  cancelled:  '<span class="badge br">Cancelled</span>',
+  overdue:    '<span class="badge by">Overdue</span>',
+  no_show:    '<span class="badge br">No-Show</span>',
+};
+
+function renderBookings(filter='all') {
+  const list = document.getElementById('allBookingsList'); if(!list) return;
+  const sorted = [...myBookings].sort((a,b)=>{
+    if(a.period==='upcoming' && b.period!=='upcoming') return -1;
+    if(b.period==='upcoming' && a.period!=='upcoming') return 1;
+    return 0;
+  });
+  const filtered = sorted.filter(b=>{
+    if(filter==='all')       return true;
+    if(filter==='upcoming')  return b.period==='upcoming';
+    if(filter==='past')      return b.period==='past';
+    if(filter==='facility')  return b.type==='facility';
+    if(filter==='dining')    return b.type==='dining';
+    if(filter==='cancelled') return b.status==='cancelled';
+    return true;
+  });
+  if(!filtered.length) {
+    list.innerHTML='<div style="padding:32px;text-align:center;color:var(--muted);font-size:14px">No bookings found.</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(b=>`
+    <div class="bk-row" onclick="openBK(myBookings.find(x=>x.ref==='${b.ref}'))">
+      <div class="bk-ico">${b.icon}</div>
+      <div class="bk-inf">
+        <div class="bk-t">${b.name}</div>
+        <div class="bk-m">${b.guests} guest${b.guests!==1?'s':''} · <span style="font-family:monospace;font-size:11px;color:var(--gold)">${b.ref}</span></div>
+      </div>
+      <div class="bk-r">
+        <div class="bk-rt">${b.time}</div>
+        <div class="bk-rd">${b.date}</div>
+        <span style="display:block;margin-top:4px">${statusBadge[b.status]||''}</span>
+        ${b.bookedAt?`<div class="bk-bookedat">🕐 ${b.bookedAt}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function renderDashUpcoming() {
+  const ul = document.getElementById('dashUpcomingList'); if(!ul) return;
+  const up = myBookings.filter(b=>b.period==='upcoming' && b.status!=='cancelled').slice(0,3);
+  document.getElementById('statUpcoming').textContent = up.length;
+  document.getElementById('statVisits').textContent   = myBookings.filter(b=>b.status==='checkedin').length;
+  if(!up.length) {
+    ul.innerHTML='<div style="padding:18px;text-align:center;color:var(--muted);font-size:13px">No upcoming bookings. <a style="color:var(--gold);cursor:pointer" onclick="go(\'bookfacility\',null,\'Book Facility\')">Book now →</a></div>';
+    return;
+  }
+  ul.innerHTML = up.map(b=>`
+    <div class="bk-row" onclick="openBK(myBookings.find(x=>x.ref==='${b.ref}'))">
+      <div class="bk-ico">${b.icon}</div>
+      <div class="bk-inf"><div class="bk-t">${b.name}</div><div class="bk-m"><span style="font-family:monospace;font-size:11px;color:var(--gold)">${b.ref}</span></div></div>
+      <div class="bk-r"><div class="bk-rt">${b.time}</div><div class="bk-rd">${b.date}</div><span style="display:block;margin-top:4px">${statusBadge[b.status]||''}</span></div>
+    </div>`).join('');
+}
+
+function renderGuestPasses() {
+  const list = document.getElementById('guestPassList'); if(!list) return;
+  if(!myGuestPasses.length) {
+    list.innerHTML='<div style="padding:28px;text-align:center;color:var(--muted);font-size:13px">No guest passes issued yet.</div>';
+    return;
+  }
+  const gpStatus = {active:'<span class="badge bg">Active</span>',used:'<span class="badge bb">Used</span>',expired:'<span class="badge br">Expired</span>'};
+  list.innerHTML = myGuestPasses.map(g=>`
+    <div class="bk-row" onclick="openGP(myGuestPasses.find(x=>x.ref==='${g.ref}'))">
+      <div class="bk-ico">🎟️</div>
+      <div class="bk-inf"><div class="bk-t">${g.name}</div><div class="bk-m"><span style="font-family:monospace;font-size:11px;color:var(--gold)">${g.ref}</span> · ${g.type}</div></div>
+      <div class="bk-r"><div class="bk-rt">${g.date}</div>${gpStatus[g.status]||''}</div>
+    </div>`).join('');
+
+  const rgl = document.getElementById('recentGuestsList');
+  if(rgl && myGuestPasses.length) {
+    rgl.innerHTML = myGuestPasses.slice(0,3).map(g=>`
+      <div class="bk-row" style="padding:10px 0" onclick="openGP(myGuestPasses.find(x=>x.ref==='${g.ref}'))">
+        <div class="bk-ico" style="width:32px;height:32px;font-size:14px">👤</div>
+        <div class="bk-inf"><div class="bk-t" style="font-size:13px">${g.name}</div><div class="bk-m">${g.date}</div></div>
+        <span class="badge bg">Active</span>
+      </div>`).join('');
+  }
+}
+
+// ═══════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════
+function fmtBookedAt() {
+  const n = new Date();
+  return n.toLocaleDateString('en-SG',{weekday:'short',day:'numeric',month:'short',year:'numeric'})+
+    ' · '+n.toLocaleTimeString('en-SG',{hour:'2-digit',minute:'2-digit',hour12:true});
+}
+function fmtDate(d) {
+  if(!d) return '—';
+  const parts = d.split('-');
+  const dt = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+  return dt.toLocaleDateString('en-SG',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+}
+function fmt12(t) {
+  if(!t) return t;
+  const [h,m] = t.split(':').map(Number), ap = h>=12?'PM':'AM';
+  return ((h%12)||12)+':'+(m<10?'0'+m:m)+' '+ap;
+}
+function addHour(t) {
+  if(!t) return '';
+  const [h,m] = t.split(':').map(Number);
+  const tot = h*60+(m||0)+60;
+  return String(Math.floor(tot/60)).padStart(2,'0')+':'+String(tot%60).padStart(2,'0');
+}
+function genRef(prefix) {
+  return prefix+'-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+Math.random().toString(36).substring(2,6).toUpperCase();
+}
+function copyText(txt) {
+  navigator.clipboard?.writeText(txt).catch(()=>{});
+  showToast('Copied to clipboard ✓','success');
+}
+function copyRef() { copyText(document.getElementById('bc-ref-code')?.textContent||''); }
+
+// Duplicate booking check — same facility + date + time
+function isDuplicate(facilityName, date, time) {
+  return myBookings.some(b =>
+    b.name === facilityName &&
+    b.rawDate === date &&
+    b.rawTime === time &&
+    b.status !== 'cancelled'
+  );
+}
+
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+function go(id, el, title) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  let scr = document.getElementById('screen-'+id);
+  if (!scr) {
+    scr = document.getElementById('screen-not-implemented');
+    if (title) document.getElementById('pageTitle').textContent = title + ' (Coming Soon)';
+  } else {
+    if (title) document.getElementById('pageTitle').textContent = title;
+  }
+  if (scr) scr.classList.add('active');
+  document.querySelectorAll('.sb-lnk').forEach(a=>a.classList.remove('active'));
+  if(el) el.classList.add('active');
+  else document.querySelectorAll('.sb-lnk').forEach(l=>{ if(l.getAttribute('onclick')?.includes("'"+id+"'")) l.classList.add('active'); });
+  
+  // Role-specific renders
+  const role = getRole();
+  if (id === 'dashboard') {
+    if (role === 'management') renderManagementDashboard();
+    if (role === 'staff') renderStaffSchedule('today');
+  }
+  if (id === 'analytics' && role === 'management') renderInbox();
+
+  window.scrollTo(0,0); closeSB(); closeNotifPanel();
+}
+
+// ═══════════════════════════════════
+// MANAGEMENT LOGIC
+// ═══════════════════════════════════
+function renderManagementDashboard() {
+  const activityList = document.getElementById('mgmtActivityList');
+  const pendingList = document.getElementById('mgmtPendingList');
+  if (!activityList || !pendingList) return;
+
+  const activities = [
+    { name: 'Benjamin Ong', action: 'Booked Tennis Court 1', time: '10 mins ago' },
+    { name: 'Cheryl Lee', action: 'Issued Guest Pass', time: '25 mins ago' },
+    { name: 'John Tan', action: 'Checked in at Gym', time: '1 hour ago' },
+    { name: 'Alice Wong', action: 'Reserved Le Mansion', time: '2 hours ago' },
+  ];
+
+  const pendings = [
+    { name: 'David Lim', type: 'Membership Upgrade', date: 'Today' },
+    { name: 'Sarah Chen', type: 'Credit Refund', date: 'Yesterday' },
+  ];
+
+  activityList.innerHTML = activities.map(a => `
+    <div class="bk-row">
+      <div class="bk-ico">👤</div>
+      <div class="bk-inf"><div class="bk-t">${a.name}</div><div class="bk-m">${a.action}</div></div>
+      <div class="bk-r"><div class="bk-rd">${a.time}</div></div>
+    </div>`).join('');
+
+  pendingList.innerHTML = pendings.map(p => `
+    <div class="bk-row">
+      <div class="bk-ico">⏳</div>
+      <div class="bk-inf"><div class="bk-t">${p.name}</div><div class="bk-m">${p.type}</div></div>
+      <div class="bk-r"><div class="bk-rd">${p.date}</div><button class="btn btn-g btn-sm" style="margin-top:5px">Review</button></div>
+    </div>`).join('');
+}
+
+function renderInbox() {
+  const list = document.getElementById('inboxList');
+  if (!list) return;
+
+  const chats = [
+    { name: 'Benjamin Ong', msg: 'Hi, can I extend my tennis booking?', time: '9:45 AM', unread: true },
+    { name: 'Cheryl Lee', msg: 'Thanks for the guest pass!', time: 'Yesterday', unread: false },
+    { name: 'Michael Khoo', msg: 'Is the gym open tomorrow morning?', time: 'Yesterday', unread: false },
+  ];
+
+  list.innerHTML = chats.map(c => `
+    <div class="bk-row" style="${c.unread?'background:#fffbef':''}">
+      <div class="bk-inf">
+        <div class="bk-t" style="display:flex;justify-content:space-between">
+          ${c.name} ${c.unread?'<span style="width:8px;height:8px;background:var(--gold);border-radius:50%"></span>':''}
+        </div>
+        <div class="bk-m">${c.msg}</div>
+        <div class="bk-rd" style="font-size:10px;margin-top:4px">${c.time}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════
+// STAFF LOGIC
+// ═══════════════════════════════════
+function renderStaffSchedule(period) {
+  const list = document.getElementById('staffScheduleList');
+  const title = document.getElementById('staffScheduleTitle');
+  if (!list || !title) return;
+
+  // UI state for buttons
+  document.querySelectorAll('.filter-row .fbtn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.getElementById('staff-btn-' + period);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const today = new Date().toLocaleDateString('en-SG', { day: 'numeric', month: 'short' });
+  const tomorrow = new Date(Date.now() + 86400000).toLocaleDateString('en-SG', { day: 'numeric', month: 'short' });
+
+  title.textContent = period === 'today' ? `Today's Schedule (${today})` : 
+                     period === 'tomorrow' ? `Tomorrow's Schedule (${tomorrow})` : 'Next 7 Days';
+
+  const mockSchedule = [
+    { name: 'Benjamin Ong', facility: 'Tennis Court 1', time: '09:00 - 10:00', date: today, status: 'confirmed', ref: 'BK-T-101' },
+    { name: 'Cheryl Lee', facility: 'Gym', time: '10:00 - 11:00', date: today, status: 'checkedin', ref: 'BK-G-202' },
+    { name: 'Alice Wong', facility: 'Le Mansion', time: '12:30 - 13:30', date: today, status: 'confirmed', ref: 'BK-D-303' },
+    { name: 'David Lim', facility: 'Tennis Court 2', time: '08:00 - 09:00', date: tomorrow, status: 'confirmed', ref: 'BK-T-404' },
+    { name: 'Sarah Chen', facility: 'Squash Court 1', time: '15:00 - 16:00', date: tomorrow, status: 'confirmed', ref: 'BK-S-505' },
+  ];
+
+  const filtered = mockSchedule.filter(s => {
+    if (period === 'today') return s.date === today;
+    if (period === 'tomorrow') return s.date === tomorrow;
+    return true;
+  });
+
+  list.innerHTML = filtered.map(s => `
+    <div class="bk-row">
+      <div class="bk-ico">${s.facility.includes('Tennis')?'🎾':s.facility.includes('Gym')?'💪':'🍽️'}</div>
+      <div class="bk-inf">
+        <div class="bk-t">${s.name}</div>
+        <div class="bk-m">${s.facility} · <span style="font-family:monospace;font-size:11px;color:var(--gold)">${s.ref}</span></div>
+      </div>
+      <div class="bk-r">
+        <div class="bk-rt">${s.time}</div>
+        <span style="display:block;margin-top:4px">${statusBadge[s.status]}</span>
+        ${s.status==='confirmed'?`<button class="btn btn-o btn-sm" style="margin-top:8px" onclick="staffTriggerCheckin('${s.ref}')">Check In</button>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function staffTriggerCheckin(ref) {
+  go('checkin', null, 'Member Check-in');
+  document.getElementById('checkinRef').value = ref;
+}
+
+function doCheckin() {
+  const ref = document.getElementById('checkinRef').value.trim().toUpperCase();
+  const status = document.getElementById('checkinStatus');
+  if(!ref) return showToast('Please enter a reference','error');
+
+  status.style.display = 'block';
+  status.innerHTML = `<div style="padding:20px;background:var(--cream);border-radius:10px">⏳ Validating reference...</div>`;
+
+  setTimeout(() => {
+    // Demo logic: any ref with 'BK' is valid
+    if(ref.includes('BK') || ref.includes('GST')) {
+      status.innerHTML = `
+        <div style="padding:20px;background:var(--success-bg);color:var(--success);border-radius:10px;text-align:left">
+          <div style="font-size:18px;font-weight:700;margin-bottom:8px">✅ Check-in Successful</div>
+          <div style="font-size:14px"><strong>Reference:</strong> ${ref}</div>
+          <div style="font-size:14px"><strong>Member:</strong> Benjamin Ong (SRC0102)</div>
+          <div style="font-size:14px"><strong>Access:</strong> Tennis Court 1</div>
+          <div style="font-size:12px;margin-top:10px;color:var(--muted)">Check-in recorded at ${new Date().toLocaleTimeString()}</div>
+        </div>
+        <button class="btn btn-g btn-fw" style="margin-top:15px" onclick="go('dashboard',null,'Staff Dashboard')">Return to Schedule</button>
+      `;
+      showToast('Check-in successful','success');
+    } else {
+      status.innerHTML = `
+        <div style="padding:20px;background:var(--danger-bg);color:var(--danger);border-radius:10px">
+          <div style="font-weight:700">❌ Invalid Reference</div>
+          <div style="font-size:13px;margin-top:4px">No active booking found for "${ref}". Please check the ID and try again.</div>
+        </div>
+      `;
+    }
+  }, 800);
+}
+
+function doMemberLookup() {
+  const q = document.getElementById('lookupQuery').value.trim();
+  const res = document.getElementById('lookupResults');
+  if(!q) return showToast('Enter name or ID','error');
+
+  res.innerHTML = `<div style="text-align:center;padding:48px;color:var(--muted)">🔍 Searching Wibiz Directory...</div>`;
+
+  setTimeout(() => {
+    // Mock results
+    const members = [
+      { name: 'Benjamin Ong', id: 'SRC0102', email: 'benjamin.ong@src-demo.local', tier: 'Full Member', status: 'Active' },
+      { name: 'Cheryl Lee', id: 'SRC0123', email: 'cheryl.lee@src-demo.local', tier: 'Full Member', status: 'Active' },
+    ].filter(m => m.name.toLowerCase().includes(q.toLowerCase()) || m.id.includes(q.toUpperCase()));
+
+    if(members.length) {
+      res.innerHTML = members.map(m => `
+        <div class="bk-row" style="border:1px solid var(--border);border-radius:12px;margin-bottom:10px">
+          <div class="bk-ico">👤</div>
+          <div class="bk-inf">
+            <div class="bk-t">${m.name}</div>
+            <div class="bk-m">${m.id} · ${m.email}</div>
+          </div>
+          <div class="bk-r">
+            <div class="badge bg">${m.status}</div>
+            <div style="font-size:11px;color:var(--gold);margin-top:4px">${m.tier}</div>
+            <button class="btn btn-o btn-sm" style="margin-top:8px" onclick="showToast('Loading member file...','info')">View File</button>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      res.innerHTML = `<div style="text-align:center;padding:48px;color:var(--muted)">No members found matching "${q}".</div>`;
+    }
+  }, 600);
+}
+
+
+function toggleSB() { document.getElementById('sidebar')?.classList.toggle('open'); document.getElementById('sbOv')?.classList.toggle('open'); }
+function closeSB()  { document.getElementById('sidebar')?.classList.remove('open'); document.getElementById('sbOv')?.classList.remove('open'); }
+
+// ═══════════════════════════════════
+// TOAST
+// ═══════════════════════════════════
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = type?`show ${type}`:'show';
+  clearTimeout(t._to); t._to = setTimeout(()=>t.className='', 3500);
+}
+
+// ═══════════════════════════════════
+// CONFIRM DIALOG
+// ═══════════════════════════════════
+let confirmCallback = null;
+function showConfirm(title, msg, cb) {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent   = msg;
+  confirmCallback = cb;
+  document.getElementById('confirmDlg').classList.add('open');
+  document.getElementById('confirmOkBtn').onclick = ()=>{ closeConfirm(); if(confirmCallback) confirmCallback(); };
+}
+function closeConfirm() { document.getElementById('confirmDlg').classList.remove('open'); confirmCallback=null; }
+
+// ═══════════════════════════════════
+// FACILITY WIZARD
+// ═══════════════════════════════════
+let FAC = { name:'', icon:'', type:'', step:1 };
+
+function facSelectFacility(name, icon, type) {
+  FAC.name=name; FAC.icon=icon; FAC.type=type;
+  document.getElementById('fac-s2-subtitle').textContent = `Booking: ${name}`;
+  setDateConstraints('fac-date');
+  facGoStep(2);
+}
+
+function facStep2Next() {
+  const dateEl = document.getElementById('fac-date');
+  const date   = dateEl.value;
+  const errEl  = document.getElementById('fac-date-err');
+  // Force clamp — in case user typed a date outside range
+  if(!date) {
+    errEl.textContent='Please select a date.';
+    errEl.style.display='block';
+    dateEl.classList.add('error');
+    return;
+  }
+  if(date < getMinDate()) {
+    errEl.textContent='Same-day bookings are walk-in only. Please select tomorrow or later.';
+    errEl.style.display='block';
+    dateEl.classList.add('error');
+    return;
+  }
+  if(date > getMaxDate()) {
+    errEl.textContent='Bookings can only be made up to 7 days in advance.';
+    errEl.style.display='block';
+    dateEl.classList.add('error');
+    return;
+  }
+  errEl.style.display='none';
+  dateEl.classList.remove('error');
+  facGoStep(3);
+}
+
+function facGoStep(n) {
+  [1,2,3,4].forEach(i=>{
+    document.getElementById('fac-step'+i).style.display = i===n?'block':'none';
+    const s = document.getElementById('fac-s'+i);
+    if(s){ s.classList.remove('active','done'); if(i<n) s.classList.add('done'); if(i===n) s.classList.add('active'); }
+  });
+  FAC.step=n;
+  if(n===4) {
+    const date   = document.getElementById('fac-date').value;
+    const time   = document.getElementById('fac-time').value;
+    const guests = document.getElementById('fac-guests').value;
+    const gNum   = parseInt(guests)||0;
+    document.getElementById('fac-rev-name').textContent    = FAC.icon+' '+FAC.name;
+    document.getElementById('fac-rev-date').textContent    = fmtDate(date);
+    document.getElementById('fac-rev-time').textContent    = fmt12(time)+' – '+fmt12(addHour(time));
+    document.getElementById('fac-rev-guests').textContent  = gNum===0?'None (member only)':gNum+' guest'+(gNum>1?'s':'');
+    document.getElementById('fac-rev-fee').textContent     = gNum===0?'No charge':'S$'+(gNum*20).toFixed(2);
+  }
+  window.scrollTo(0,0);
+}
+
+async function facConfirm() {
+  const btn     = document.getElementById('fac-confirm-btn');
+  const loading = document.getElementById('fac-confirming');
+  const date   = document.getElementById('fac-date').value;
+  const time   = document.getElementById('fac-time').value;
+  const guests = document.getElementById('fac-guests').value;
+  const notes  = document.getElementById('fac-notes').value;
+  const gNum   = parseInt(guests)||0;
+
+  // Duplicate check
+  if(isDuplicate(FAC.name, date, time)) {
+    showToast('You already have a booking for '+FAC.name+' at this date and time.','error');
+    return;
+  }
+
+  btn.disabled=true; btn.textContent='Confirming…'; loading.style.display='block';
+
+  const ref      = genRef('BK');
+  const bookedAt = fmtBookedAt();
+  const endTime  = addHour(time);
+
+  // Blueprint v2.0 exact field keys
+  await fireGHL(WH.INTAKE, {
+    booking_type:           'facility',
+    booking_source:         'form',
+    booking_mode:           'advance',
+    facility_or_venue:      FAC.type,          // GHL dropdown value: tennis/squash/gym
+    facility_name:          FAC.name,           // Human-readable name
+    slot_date:              date,
+    slot_start_time:        time,
+    slot_end_time:          endTime,
+    booking_pax_count:      gNum,               // Corrected from party_size
+    booking_outlet_pax:     gNum,
+    booking_status:         'confirmed',
+    visit_id:               ref,
+    special_request:        notes||'',
+    booking_contact_number: MBR.phone||'',
+  }, 'booking');
+
+  const bk = {
+    name:FAC.name, icon:FAC.icon, type:'facility', period:'upcoming',
+    date:fmtDate(date), rawDate:date, rawTime:time, time:fmt12(time),
+    guests:gNum, ref, status:'confirmed', bookedAt
+  };
+  myBookings.unshift(bk);
+  renderBookings(); renderDashUpcoming();
+  saveState();
+
+  addNotification('booking','Facility Booking Confirmed',
+    `${FAC.name} on ${fmtDate(date)} at ${fmt12(time)}. Ref: ${ref}`,
+    'success', 'open_booking', ref);
+
+  // Confirm screen
+  document.getElementById('bc-icon').textContent     = FAC.icon;
+  document.getElementById('bc-name').textContent     = FAC.name;
+  document.getElementById('bc-ref-code').textContent = ref;
+  document.getElementById('bc-ref-hint').textContent = `Present this reference at the entrance. Valid ${fmtDate(date)}.`;
+  document.getElementById('bc-date').textContent     = fmtDate(date);
+  document.getElementById('bc-time').textContent     = fmt12(time)+' – '+fmt12(endTime);
+  document.getElementById('bc-pax').textContent      = gNum===0?'Member only':'Party of '+(gNum+1)+' · Fee: S$'+(gNum*20).toFixed(2);
+  document.getElementById('bc-booked-at').textContent= bookedAt;
+  currentBKRef = ref;
+
+  facGoStep(1);
+  btn.disabled=false; btn.textContent='Confirm Booking →'; loading.style.display='none';
+  go('bookconfirm', null, 'Booking Confirmed');
+}
+
+// ═══════════════════════════════════
+// DINING WIZARD
+// ═══════════════════════════════════
+let DIN = { name:'', icon:'', key:'', step:1 };
+
+const DIN_SLOTS = {
+  le_mansion:    ['12:00','12:30','13:00','13:30','14:00','18:30','19:00','19:30','20:00','20:30','21:00'],
+  barkerslounge: ['17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'],
+  oasis:         ['11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00'],
+};
+
+function dinSelectVenue(name, icon, key, hours) {
+  DIN.name=name; DIN.icon=icon; DIN.key=key;
+  document.getElementById('din-s2-sub').textContent = `${name} · ${hours}`;
+  const sel = document.getElementById('din-time');
+  sel.innerHTML = (DIN_SLOTS[key]||DIN_SLOTS.le_mansion).map(t=>`<option value="${t}">${fmt12(t)}</option>`).join('');
+  setDateConstraints('din-date');
+  dinGoStep(2);
+}
+
+function dinStep2Next() {
+  const dateEl = document.getElementById('din-date');
+  const date   = dateEl.value;
+  const errEl  = document.getElementById('din-date-err');
+  if(!date) {
+    errEl.textContent='Please select a date.';
+    errEl.style.display='block'; dateEl.classList.add('error'); return;
+  }
+  if(date < getMinDate()) {
+    errEl.textContent='Same-day dining is walk-in only. Please select tomorrow or later.';
+    errEl.style.display='block'; dateEl.classList.add('error'); return;
+  }
+  if(date > getMaxDate()) {
+    errEl.textContent='Reservations can only be made up to 7 days in advance.';
+    errEl.style.display='block'; dateEl.classList.add('error'); return;
+  }
+  errEl.style.display='none'; dateEl.classList.remove('error');
+  dinGoStep(3);
+}
+
+function dinGoStep(n) {
+  [1,2,3,4].forEach(i=>{
+    document.getElementById('din-step'+i).style.display = i===n?'block':'none';
+    const s = document.getElementById('din-s'+i);
+    if(s){ s.classList.remove('active','done'); if(i<n) s.classList.add('done'); if(i===n) s.classList.add('active'); }
+  });
+  DIN.step=n;
+  if(n===4) {
+    const date  = document.getElementById('din-date').value;
+    const time  = document.getElementById('din-time').value;
+    const pax   = document.getElementById('din-pax').value;
+    const table = document.getElementById('din-table').value;
+    document.getElementById('din-rev-venue').textContent = DIN.icon+' '+DIN.name;
+    document.getElementById('din-rev-date').textContent  = fmtDate(date);
+    document.getElementById('din-rev-time').textContent  = fmt12(time)+' – '+fmt12(addHour(time));
+    document.getElementById('din-rev-pax').textContent   = 'Party of '+pax;
+    document.getElementById('din-rev-table').textContent = table;
+  }
+  window.scrollTo(0,0);
+}
+
+async function dinConfirm() {
+  const btn     = document.getElementById('din-confirm-btn');
+  const loading = document.getElementById('din-confirming');
+  btn.disabled=true; btn.textContent='Confirming…'; loading.style.display='block';
+
+  const date  = document.getElementById('din-date').value;
+  const time  = document.getElementById('din-time').value;
+  const pax   = document.getElementById('din-pax').value;
+  const table = document.getElementById('din-table').value;
+  const notes = document.getElementById('din-notes').value;
+  const paxN  = parseInt(pax)||2;
+  const hour  = parseInt((time||'12').split(':')[0]);
+  const shift = DIN.key==='le_mansion' ? (hour<16?'lunch':'dinner') : DIN.key==='barkerslounge' ? 'dinner' : 'lunch';
+  const ref   = genRef('BK');
+  const bookedAt = fmtBookedAt();
+  const endTime  = addHour(time);
+
+  // Blueprint v2.0 exact field keys — facility_or_venue uses GHL dropdown values
+  await fireGHL(WH.INTAKE, {
+    booking_type:           'dining',
+    booking_source:         'form',
+    booking_mode:           'advance',
+    facility_or_venue:      DIN.key,           // le_mansion / barkerslounge / oasis
+    facility_name:          DIN.name,
+    booking_shift:          shift,              // lunch / dinner
+    slot_date:              date,
+    slot_start_time:        time,
+    slot_end_time:          endTime,
+    booking_pax_count:      paxN,              // Corrected from party_size
+    booking_outlet_pax:     paxN,
+    booking_table_type:     table,
+    booking_status:         'confirmed',
+    special_request:        notes||'',
+    visit_id:               ref,
+    booking_contact_number: MBR.phone||'',
+  }, 'booking');
+
+  const bk = {
+    name:DIN.name, icon:DIN.icon, type:'dining', period:'upcoming',
+    date:fmtDate(date), rawDate:date, rawTime:time, time:fmt12(time),
+    guests:paxN, ref, status:'confirmed', bookedAt
+  };
+  myBookings.unshift(bk);
+  renderBookings(); renderDashUpcoming();
+  saveState();
+
+  addNotification('booking','Dining Reservation Confirmed',
+    `${DIN.name} on ${fmtDate(date)} at ${fmt12(time)}, party of ${pax}. Ref: ${ref}`,
+    'success', 'open_booking', ref);
+
+  document.getElementById('bc-icon').textContent     = DIN.icon;
+  document.getElementById('bc-name').textContent     = DIN.name;
+  document.getElementById('bc-ref-code').textContent = ref;
+  document.getElementById('bc-ref-hint').textContent = `Present at restaurant entrance. Valid ${fmtDate(date)}.`;
+  document.getElementById('bc-date').textContent     = fmtDate(date);
+  document.getElementById('bc-time').textContent     = fmt12(time)+' – '+fmt12(endTime);
+  document.getElementById('bc-pax').textContent      = 'Party of '+pax;
+  document.getElementById('bc-booked-at').textContent= bookedAt;
+  currentBKRef = ref;
+
+  dinGoStep(1);
+  btn.disabled=false; btn.textContent='Confirm Reservation →'; loading.style.display='none';
+  go('bookconfirm', null, 'Reservation Confirmed');
+}
+
+// ═══════════════════════════════════
+// CANCEL — with confirmation dialog
+// ═══════════════════════════════════
+function confirmCancelPrompt() {
+  showConfirm(
+    'Cancel This Booking',
+    `Are you sure you want to cancel booking ${currentBKRef}? If within 24 hours of the slot, late cancellation policy may apply.`,
+    ()=>doCancel(currentBKRef)
+  );
+}
+
+function cancelFromModal() {
+  closeM('bkModal');
+  const ref = currentModalBKRef;
+  const bk  = myBookings.find(b=>b.ref===ref);
+  if(!bk || bk.status==='cancelled') return;
+  showConfirm(
+    'Cancel This Booking',
+    `Cancel booking ${ref}? Late cancellation policy applies within 24 hours of slot time.`,
+    ()=>doCancel(ref)
+  );
+}
+
+async function doCancel(ref) {
+  const bk = myBookings.find(b => b.ref === ref);
+  if (!bk) return;
+  
+  await fireGHL(WH.INTAKE, {
+    booking_source:    'form',
+    visit_id:          ref,
+    booking_status:    'cancelled',
+    cancelled_at:      new Date().toISOString(),
+    facility_or_venue: bk.facKey || bk.type || 'facility',
+  });
+  
+  bk.status = 'cancelled';
+  bk.period = 'past';
+  renderBookings();
+  renderDashUpcoming();
+  saveState();
+  addNotification('cancel', 'Booking Cancelled', `Booking ${ref} has been cancelled.`, 'error', 'open_booking', ref);
+  
+  if (document.getElementById('screen-bookconfirm')?.classList.contains('active')) {
+    go('bookings', null, 'My Bookings');
+  }
+  
+  closeM('bkModal');
+  showToast('Booking cancelled', 'error');
+}
+
+// ═══════════════════════════════════
+// GUEST PASS — exact field keys + self-registration blocked
+// ═══════════════════════════════════
+async function issueGP() {
+  const name    = (document.getElementById('guestName')?.value||'').trim();
+  const email   = (document.getElementById('guestEmail')?.value||'').trim().toLowerCase();
+  const phone   = (document.getElementById('guestPhone')?.value||'').trim();
+  const date    = document.getElementById('guestDate')?.value;
+  const purpose = document.getElementById('guestPurpose')?.value;
+  const facility= document.getElementById('guestFacility')?.value;
+  const btn     = document.getElementById('issueGPBtn');
+
+  // Clear errors
+  ['guestNameErr','guestEmailErr','guestDateErr'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display='none';
+  });
+  ['guestName','guestEmail','guestDate'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.remove('error');
+  });
+  document.getElementById('guestSelfErr').style.display='none';
+  document.getElementById('guestQuotaErr').style.display='none';
+
+  let valid = true;
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if(!name) {
+    document.getElementById('guestNameErr').style.display='block';
+    document.getElementById('guestName').classList.add('error');
+    valid=false;
+  }
+  if(!email || !emailRe.test(email)) {
+    document.getElementById('guestEmailErr').style.display='block';
+    document.getElementById('guestEmail').classList.add('error');
+    valid=false;
+  }
+  if(!date) {
+    document.getElementById('guestDateErr').style.display='block';
+    document.getElementById('guestDate').classList.add('error');
+    valid=false;
+  }
+  if(!valid) return;
+
+  // Block self-registration
+  if(email === MBR.email.toLowerCase()) {
+    document.getElementById('guestSelfErr').style.display='block';
+    return;
+  }
+
+  // Quota check
+  if(MBR.quota.used >= MBR.quota.total) {
+    document.getElementById('guestQuotaErr').style.display='block';
+    return;
+  }
+
+  btn.disabled=true; btn.textContent='Issuing…';
+
+  const nameParts = name.split(' ');
+  const ref = genRef('GST');
+  const verifyUrl = `https://src.wibiz.ai/verify/?cid=${encodeURIComponent(email)}&bid=${ref}`;
+
+  const payload = {
+    firstName:              nameParts[0],
+    lastName:               nameParts.slice(1).join(' ')||'',
+    email:                  email,
+    phone:                  phone||'',
+    booking_type:           'guest_pass',
+    booking_source:         'form',
+    booking_full_name:      name,
+    booking_guest_name:     name,
+    booking_contact_number: phone||'',
+    slot_date:              date,
+    visit_id:               ref,
+    booking_status:         'confirmed',
+    facility_or_venue:      facility,
+    facility_name:          facility,
+    booking_pax_count:      1,
+    src_verify_url:         verifyUrl,
+    visit_purpose:          purpose,
+    member_owner_name:      MBR.name,
+    member_owner_email:     MBR.email,
+    membership_number:      MBR.membershipNumber||MBR.id,
+    inviting_member_id:     MBR.membershipNumber||MBR.id,
+  };
+
+  await fireGHL(WH.ISSUER,  payload, 'guest');
+  await fireGHL(WH.INBOUND, payload, 'guest');
+
+  updateQuota(MBR.quota.used+1, MBR.quota.total);
+
+  const gp = { name, email, ref, date:fmtDate(date), rawDate:date, type:purpose, facility, status:'active' };
+  myGuestPasses.unshift(gp);
+  renderGuestPasses();
+  saveState();
+
+  document.getElementById('gpNewRef').textContent = ref;
+  document.getElementById('gpOKModal').classList.add('open');
+
+  addNotification('guest','Guest Pass Issued',
+    `Pass for ${name} on ${fmtDate(date)} (${facility}). Ref: ${ref}`,
+    'success', 'open_guest_pass', ref);
+
+  ['guestName','guestEmail','guestPhone'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  btn.disabled=false; btn.textContent='Issue Guest Pass & Send QR →';
+}
+
+// ═══════════════════════════════════
+// PROFILE — with validation
+// ═══════════════════════════════════
+function cancelProfile() {
+  const pfFn = document.getElementById('pfFirstName');
+  const pfLn = document.getElementById('pfLastName');
+  const pfEm = document.getElementById('pfEmail');
+  const pfPh = document.getElementById('pfPhone');
+  if(pfFn) pfFn.value = profileOriginal.fn||'';
+  if(pfLn) pfLn.value = profileOriginal.ln||'';
+  if(pfEm) pfEm.value = profileOriginal.em||'';
+  if(pfPh) pfPh.value = profileOriginal.ph||'';
+  ['pfFirstName','pfEmail','pfPhone'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.remove('error');
+  });
+  ['pfFirstNameErr','pfEmailErr','pfPhoneErr'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display='none';
+  });
+  showToast('Changes discarded','');
+}
+
+function saveProfile() {
+  const fn    = (document.getElementById('pfFirstName')?.value||'').trim();
+  const ln    = (document.getElementById('pfLastName')?.value||'').trim();
+  const email = (document.getElementById('pfEmail')?.value||'').trim();
+  const phone = (document.getElementById('pfPhone')?.value||'').trim();
+
+  // Clear errors
+  ['pfFirstNameErr','pfEmailErr','pfPhoneErr'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display='none';
+  });
+  ['pfFirstName','pfEmail','pfPhone'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.remove('error');
+  });
+
+  let valid = true;
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRe = /^[\+\d\s\-\(\)]{7,20}$/;
+
+  if(!fn) {
+    document.getElementById('pfFirstNameErr').style.display='block';
+    document.getElementById('pfFirstName').classList.add('error');
+    valid=false;
+  }
+  if(!emailRe.test(email)) {
+    document.getElementById('pfEmailErr').style.display='block';
+    document.getElementById('pfEmail').classList.add('error');
+    valid=false;
+  }
+  if(phone && !phoneRe.test(phone)) {
+    document.getElementById('pfPhoneErr').style.display='block';
+    document.getElementById('pfPhone').classList.add('error');
+    valid=false;
+  }
+  if(!valid) return;
+
+  MBR.firstName = fn;
+  MBR.lastName  = ln;
+  MBR.name      = fn+(ln?' '+ln:'');
+  MBR.email     = email;
+  MBR.phone     = phone;
+  profileOriginal = { fn, ln, em:email, ph:phone };
+
+  const init = MBR.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  document.getElementById('sbMemName').textContent     = MBR.name;
+  document.getElementById('heroName').textContent      = MBR.firstName;
+  document.getElementById('profileName').textContent   = MBR.name;
+  document.getElementById('profileInitials').textContent = init;
+  saveState();
+  showToast('Profile updated ✓','success');
+}
+
+// ═══════════════════════════════════
+// MODALS
+// ═══════════════════════════════════
+function openBK(b) {
+  if(!b) return;
+  currentModalBKRef = b.ref;
+  document.getElementById('bm-title').textContent  = b.name;
+  document.getElementById('bm-name').textContent   = b.name;
+  document.getElementById('bm-date').textContent   = b.date;
+  document.getElementById('bm-time').textContent   = b.time;
+  document.getElementById('bm-guests').textContent = b.guests+(b.guests===1?' guest':' guests');
+  document.getElementById('bm-ref').textContent    = b.ref;
+  document.getElementById('bm-status').innerHTML   = statusBadge[b.status]||b.status;
+  document.getElementById('bm-bookedat').textContent= b.bookedAt||'—';
+  // Show cancel button only for cancellable bookings
+  const cancelWrap = document.getElementById('bm-cancel-wrap');
+  if(cancelWrap) cancelWrap.style.display = (b.status==='confirmed'||b.status==='pending') ? 'block' : 'none';
+  document.getElementById('bkModal').classList.add('open');
+}
+
+function openGP(g) {
+  if(!g) return;
+  document.getElementById('gpm-title').textContent = g.name+' — Guest Pass';
+  document.getElementById('gpm-name').textContent  = g.name;
+  document.getElementById('gpm-date').textContent  = g.date;
+  document.getElementById('gpm-type').textContent  = g.type||g.facility||'—';
+  document.getElementById('gpm-ref').textContent   = g.ref;
+  const gpStatusMap = {active:'<span class="badge bg">Active</span>',used:'<span class="badge bb">Used</span>',expired:'<span class="badge br">Expired</span>'};
+  document.getElementById('gpm-status').innerHTML  = gpStatusMap[g.status]||g.status;
+  document.getElementById('gpModal').classList.add('open');
+}
+
+function closeM(id) { document.getElementById(id)?.classList.remove('open'); }
+document.querySelectorAll('.modal-ov').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
+
+function filterBK(btn, f) {
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); renderBookings(f);
+}
+</script>
+</body>
+</html>

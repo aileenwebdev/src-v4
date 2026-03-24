@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<title>SRC Staff Portal — Singapore Recreation Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#ad974f;--gold-light:#c9a96e;--gold-dim:rgba(173,151,79,.12);
+  --navy:#0a162b;--blue:#001e4d;--navy2:#1a3060;
+  --cream:#f8f5ef;--cream2:#f2ede4;
+  --white:#fff;--text:#1a1a1a;--muted:#6b7280;--border:#e8e2d8;
+  --success:#166534;--success-bg:#dcfce7;
+  --warn:#92400e;--warn-bg:#fef3c7;
+  --info:#1e40af;--info-bg:#dbeafe;
+  --danger:#c0392b;--danger-bg:#fee2e2;
+  --sidebar-w:264px;--radius:14px;--radius-sm:8px;--radius-lg:18px;
+  --shadow:0 2px 12px rgba(0,0,0,.06);--shadow-lg:0 8px 32px rgba(0,0,0,.12)
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);font-size:15px;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:'DM Sans',sans-serif;cursor:pointer}
+textarea{resize:vertical}
+
+#login-page{display:flex;min-height:100vh;align-items:stretch}
+.login-left{flex:1;background:linear-gradient(155deg,var(--navy) 0%,#0f2040 50%,#0a1830 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 48px;position:relative;overflow:hidden}
+.login-left::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;border:90px solid rgba(173,151,79,.05);top:-140px;right:-140px}
+.login-left::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;border:60px solid rgba(173,151,79,.04);bottom:-100px;left:-80px}
+.ll-c{position:relative;z-index:1;width:100%;max-width:340px}
+.login-logo{text-align:center;margin-bottom:52px}
+.login-emblem{width:84px;height:84px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);box-shadow:0 0 0 8px rgba(173,151,79,.15),0 12px 40px rgba(173,151,79,.3)}
+.login-logo h1{font-family:'Playfair Display',serif;font-size:22px;color:white;letter-spacing:.3px;line-height:1.3}
+.login-logo p{color:rgba(255,255,255,.38);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:6px}
+.lf-item{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.lf-item:last-child{border-bottom:none}
+.lf-icon{width:38px;height:38px;background:rgba(173,151,79,.14);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.lf-text strong{display:block;color:rgba(255,255,255,.88);font-size:13.5px;margin-bottom:2px}
+.lf-text span{color:rgba(255,255,255,.45);font-size:12px}
+.login-right{width:500px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding:64px 60px;background:white}
+.login-hdr{margin-bottom:32px}
+.login-hdr h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--navy);margin-bottom:8px}
+.login-hdr p{color:var(--muted);font-size:14px;line-height:1.6}
+.login-err{background:var(--danger-bg);color:var(--danger);border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px}
+.fg{margin-bottom:18px}
+.fl{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:7px}
+.fi{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;color:var(--text);transition:border-color .2s,box-shadow .2s;background:white}
+.fi:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(173,151,79,.1)}
+.fi.error{border-color:var(--danger)}
+.btn-login{width:100%;padding:14px;background:var(--navy);color:var(--gold);border:none;border-radius:10px;font-size:15px;font-weight:600;letter-spacing:.3px;transition:all .2s;margin-top:4px}
+.btn-login:hover{background:var(--blue);transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,22,43,.3)}
+.login-ft{margin-top:20px;text-align:center;color:var(--muted);font-size:12.5px}
+
+#portal-page{display:none}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;z-index:200;border-right:1px solid rgba(173,151,79,.12);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sb-brand{padding:20px 22px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px}
+.sb-emb{width:42px;height:42px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--navy);flex-shrink:0}
+.sb-brand-txt strong{display:block;color:white;font-size:13px;font-weight:600;line-height:1.3}
+.sb-brand-txt span{color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.8}
+.sb-mem{padding:16px 22px;background:rgba(173,151,79,.08);border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-mem-name{color:white;font-size:14px;font-weight:600}
+.sb-mem-id{color:var(--gold);font-size:11px;margin-top:3px;letter-spacing:.5px}
+.sb-mem-tier{display:inline-block;background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;margin-top:7px;text-transform:uppercase;letter-spacing:.8px}
+.sb-nav{flex:1;padding:14px 0;overflow-y:auto}
+.sb-sec{color:rgba(255,255,255,.25);font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;padding:14px 22px 5px}
+.sb-lnk{display:flex;align-items:center;gap:12px;padding:10px 22px;color:rgba(255,255,255,.58);font-size:13.5px;font-weight:500;transition:all .18s;cursor:pointer;border-right:3px solid transparent}
+.sb-lnk:hover{background:rgba(173,151,79,.1);color:rgba(255,255,255,.9)}
+.sb-lnk.active{background:rgba(173,151,79,.14);color:white;border-right-color:var(--gold)}
+.ni{width:20px;text-align:center;font-size:15px;flex-shrink:0;opacity:.85}
+.sb-badge{margin-left:auto;background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px}
+.sb-ft{padding:14px 22px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-logout{color:rgba(255,255,255,.32);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:9px;padding:4px 0;transition:color .2s}
+.sb-logout:hover{color:rgba(255,255,255,.65)}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+.main{margin-left:var(--sidebar-w);min-height:100vh}
+.topbar{background:white;padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 1px 10px rgba(0,0,0,.05)}
+.tb-left{display:flex;align-items:center;gap:14px}
+.hamburger{display:none;width:36px;height:36px;background:none;border:1.5px solid var(--border);border-radius:8px;align-items:center;justify-content:center;font-size:17px;color:var(--navy)}
+.tb-title{font-size:17px;font-weight:600;color:var(--navy)}
+.tb-date{color:var(--muted);font-size:12px;margin-top:1px}
+.tb-right{display:flex;align-items:center;gap:10px}
+.content{padding:26px 28px}
+.screen{display:none}.screen.active{display:block}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#0c2040 50%,var(--blue) 100%);border-radius:var(--radius-lg);padding:28px 32px;color:white;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::after{content:'SRC';position:absolute;right:28px;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:130px;font-weight:700;color:rgba(255,255,255,.025);line-height:1;pointer-events:none}
+.hero h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:5px;position:relative;z-index:1}
+.hero h2 span{color:var(--gold)}
+.hero p{color:rgba(255,255,255,.5);font-size:13px;margin-bottom:20px;position:relative;z-index:1}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative;z-index:1}
+.hs{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 16px;text-align:center}
+.hs-n{font-size:26px;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif;line-height:1}
+.hs-l{font-size:11px;color:rgba(255,255,255,.42);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.qa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.qa{background:white;border-radius:var(--radius);padding:22px 16px;cursor:pointer;transition:all .25s;border:2px solid transparent;text-align:center;box-shadow:var(--shadow)}
+.qa:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.qa-ico{width:52px;height:52px;background:var(--cream);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px}
+.qa-t{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.qa-s{font-size:12px;color:var(--muted)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.panel{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.panel-hd{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.panel-hd h3{font-size:15px;font-weight:600;color:var(--navy)}
+.panel-hd a,.panel-hd .act{color:var(--gold);font-size:13px;font-weight:500;cursor:pointer}
+.bk-row{display:flex;align-items:center;gap:13px;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.bk-row:last-child{border-bottom:none}
+.bk-row:hover{background:#fdfbf8}
+.bk-ico{width:42px;height:42px;border-radius:11px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.bk-inf{flex:1;min-width:0}
+.bk-t{font-size:14px;font-weight:600;color:var(--navy)}
+.bk-m{font-size:12px;color:var(--muted);margin-top:2px}
+.bk-r{text-align:right;flex-shrink:0}
+.bk-rt{font-size:13px;font-weight:600;color:var(--navy)}
+.bk-rd{font-size:11px;color:var(--muted);margin-top:2px}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.bg{background:var(--success-bg);color:var(--success)}
+.by{background:var(--warn-bg);color:var(--warn)}
+.bb{background:var(--info-bg);color:var(--info)}
+.br{background:var(--danger-bg);color:var(--danger)}
+.bgr{background:#f3f4f6;color:#6b7280}
+.s-hd{margin-bottom:22px}
+.s-hd h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:5px}
+.s-hd p{color:var(--muted);font-size:13.5px;line-height:1.55}
+.filter-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.fbtn{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;border:1.5px solid var(--border);background:white;color:var(--muted);cursor:pointer;transition:all .18s}
+.fbtn.active,.fbtn:hover{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:7px}
+.form-label span{font-weight:400;color:var(--muted)}
+.form-input,.form-select,.form-textarea{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;color:var(--text);background:white;transition:border-color .2s,box-shadow .2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(173,151,79,.1)}
+.form-textarea{min-height:80px}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.alert-strip{background:#fffbef;border:1px solid rgba(173,151,79,.45);border-left:3px solid var(--gold);border-radius:10px;padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;font-size:13px;color:#7a6520}
+.info-card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.info-card h4{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.d-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;gap:16px}
+.d-row:last-child{border-bottom:none}
+.dr-l{color:var(--muted);flex-shrink:0}
+.dr-v{color:var(--navy);font-weight:500;text-align:right}
+.btn{padding:11px 22px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none!important}
+.btn-p{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.btn-p:hover:not(:disabled){background:var(--blue);transform:translateY(-1px)}
+.btn-g{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.btn-g:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
+.btn-o{background:transparent;color:var(--navy);border-color:var(--border)}
+.btn-o:hover:not(:disabled){border-color:var(--navy);background:var(--cream)}
+.btn-d{background:var(--danger);color:white;border-color:var(--danger)}
+.btn-sm{padding:8px 16px;font-size:13px}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .sb-overlay.open{display:block}
+  .main{margin-left:0}
+  .hamburger{display:flex}
+  .two-col,.hero-stats,.qa-grid,.field-grid{grid-template-columns:1fr}
+  .login-left{display:none}
+  .login-right{width:100%;padding:40px 28px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-page">
+  <div class="login-left">
+    <div class="ll-c">
+      <div class="login-logo">
+        <div class="login-emblem">SRC</div>
+        <h1>Singapore Recreation Club</h1>
+        <p>Staff Portal</p>
+      </div>
+      <div class="lf-item"><div class="lf-icon">🏟️</div><div class="lf-text"><strong>Facility Management</strong><span>Oversee bookings and check-ins</span></div></div>
+      <div class="lf-item"><div class="lf-icon">👥</div><div class="lf-text"><strong>Member Services</strong><span>Look up and assist members</span></div></div>
+      <div class="lf-item"><div class="lf-icon">🎫</div><div class="lf-text"><strong>Support Tickets</strong><span>Log and track member issues</span></div></div>
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="login-hdr">
+      <h2>Staff Sign In</h2>
+      <p>Use your SRC staff credentials to access the portal.</p>
+    </div>
+    <div class="login-err" id="login-err">⚠ <span id="login-err-msg">Invalid credentials</span></div>
+    <div class="fg">
+      <label class="fl">Username</label>
+      <input class="fi" type="text" id="inp-user" placeholder="staff.username" autocomplete="username">
+    </div>
+    <div class="fg">
+      <label class="fl">Password</label>
+      <input class="fi" type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-login" id="btn-login" onclick="doLogin()">Sign In</button>
+    <div class="login-ft">SRC Staff Portal · For authorised personnel only</div>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div id="portal-page">
+  <div class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="sb-emb">SRC</div>
+      <div class="sb-brand-txt"><strong>Singapore Recreation Club</strong><span>Staff Portal</span></div>
+    </div>
+    <div class="sb-mem">
+      <div class="sb-mem-name" id="sb-name">Staff Member</div>
+      <div class="sb-mem-id" id="sb-role-label">Staff</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-sec">Navigation</div>
+      <div class="sb-lnk active" onclick="navigate('dashboard')" id="nav-dashboard"><span class="ni">🏠</span> Dashboard</div>
+      <div class="sb-lnk" onclick="navigate('bookings')"   id="nav-bookings"><span class="ni">📅</span> Today's Bookings</div>
+      <div class="sb-lnk" onclick="navigate('members')"   id="nav-members"><span class="ni">👥</span> Member Search</div>
+      <div class="sb-lnk" onclick="navigate('checkin')"   id="nav-checkin"><span class="ni">✅</span> Quick Check-in</div>
+      <div class="sb-lnk" onclick="navigate('tickets')"   id="nav-tickets"><span class="ni">🎫</span> Tickets</div>
+    </nav>
+    <div class="sb-ft">
+      <div class="sb-logout" onclick="doLogout()"><span>↩</span> Sign Out</div>
+    </div>
+  </div>
+  <div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="tb-left">
+        <button class="hamburger" onclick="openSidebar()">☰</button>
+        <div><div class="tb-title" id="tb-title">Dashboard</div><div class="tb-date" id="tb-date"></div></div>
+      </div>
+      <div class="tb-right">
+        <span class="badge bb" id="tb-role-badge">Staff</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Dashboard -->
+      <div class="screen active" id="screen-dashboard">
+        <div class="hero">
+          <h2>Welcome back, <span id="dash-name">Staff</span></h2>
+          <p id="dash-date"></p>
+          <div class="hero-stats" id="dash-stats">
+            <div class="hs"><div class="hs-n" id="stat-today">—</div><div class="hs-l">Today's Bookings</div></div>
+            <div class="hs"><div class="hs-n" id="stat-checkedin">—</div><div class="hs-l">Checked In</div></div>
+            <div class="hs"><div class="hs-n" id="stat-pending">—</div><div class="hs-l">Pending</div></div>
+            <div class="hs"><div class="hs-n" id="stat-guests">—</div><div class="hs-l">Guest Passes</div></div>
+          </div>
+        </div>
+        <div class="qa-grid">
+          <div class="qa" onclick="navigate('bookings')"><div class="qa-ico">📅</div><div class="qa-t">Today's Bookings</div><div class="qa-s">View all bookings for today</div></div>
+          <div class="qa" onclick="navigate('members')"><div class="qa-ico">👥</div><div class="qa-t">Member Search</div><div class="qa-s">Look up any member</div></div>
+          <div class="qa" onclick="navigate('tickets')"><div class="qa-ico">🎫</div><div class="qa-t">Support Tickets</div><div class="qa-s">Raise a member issue</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-hd"><h3>Recent Bookings</h3><a onclick="navigate('bookings')">View all</a></div>
+          <div id="dash-recent"><div style="padding:32px;text-align:center;color:var(--muted)">Loading…</div></div>
+        </div>
+      </div>
+
+      <!-- Bookings Today -->
+      <div class="screen" id="screen-bookings"></div>
+
+      <!-- Member Search -->
+      <div class="screen" id="screen-members"></div>
+
+      <!-- Quick Check-in -->
+      <div class="screen" id="screen-checkin">
+        <div class="s-hd"><h3>Quick Check-in</h3><p>Scan or type a membership number to check in a member.</p></div>
+        <div class="panel" style="padding:24px">
+          <div style="display:flex;gap:10px;margin-bottom:16px">
+            <input id="checkin-input" class="form-input" placeholder="Membership number…" style="flex:1"
+              onkeydown="if(event.key==='Enter')quickCheckin()">
+            <button class="btn btn-g" onclick="quickCheckin()">Check In</button>
+          </div>
+          <div id="checkin-result"></div>
+        </div>
+      </div>
+
+      <!-- Tickets -->
+      <div class="screen" id="screen-tickets"></div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { renderMemberSearchScreen, bindMemberSearch } from './src/staff/member-search.js';
+import { renderBookingsTodayScreen, loadTodayBookings } from './src/staff/bookings-today.js';
+import { renderTicketsScreen, bindTickets } from './src/staff/tickets.js';
+
+let SESSION = null;
+const API_PWD = '';  // Staff portal uses session auth, not query-param auth
+
+// ── Login ──────────────────────────────────────────────────────────────────
+window.doLogin = async () => {
+  const username = document.getElementById('inp-user').value.trim();
+  const password = document.getElementById('inp-pass').value;
+  const errEl    = document.getElementById('login-err');
+  const btn      = document.getElementById('btn-login');
+
+  if (!username || !password) {
+    errEl.querySelector('#login-err-msg').textContent = 'Enter username and password.';
+    errEl.style.display = 'flex'; return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Signing in…';
+
+  try {
+    const res  = await fetch('/api/login-staff', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ username, password }),
+      credentials: 'include',
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Login failed');
+    if (data.role === 'management') { window.location.replace('/management'); return; }
+    SESSION = data;
+    showPortal(data);
+  } catch (e) {
+    errEl.querySelector('#login-err-msg').textContent = e.message;
+    errEl.style.display = 'flex';
+    btn.disabled = false; btn.textContent = 'Sign In';
+  }
+};
+
+window.doLogout = async () => {
+  await fetch('/api/logout', { method: 'POST', credentials: 'include' });
+  window.location.replace('/');
+};
+
+// ── Show portal ────────────────────────────────────────────────────────────
+function showPortal(session) {
+  document.getElementById('login-page').style.display  = 'none';
+  document.getElementById('portal-page').style.display = 'block';
+  document.getElementById('sb-name').textContent        = session.name || 'Staff';
+  document.getElementById('sb-role-label').textContent  = session.role === 'management' ? 'Management' : 'Staff';
+  document.getElementById('tb-role-badge').textContent  = session.role === 'management' ? 'Management' : 'Staff';
+  document.getElementById('dash-name').textContent      = session.name || 'Staff';
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-SG', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('dash-date').textContent = dateStr;
+  document.getElementById('tb-date').textContent   = dateStr;
+
+  loadDashboard();
+}
+
+async function loadDashboard() {
+  try {
+    const res  = await fetch(`/api/fetch-bookings?pwd=${encodeURIComponent(window.__apiPwd || '')}`);
+    const data = await res.json();
+    if (!data.success) return;
+
+    const contacts = data.contacts || [];
+    const cf = (c, k) => {
+      const f = (c.customFields || []).find(x => x.fieldKey === `contact.${k}` || x.fieldKey === k);
+      return f ? (f.fieldValue || '') : '';
+    };
+
+    const checkedIn = contacts.filter(c => cf(c, 'checked_in') === 'true').length;
+    const guests    = contacts.filter(c => cf(c, 'booking_type') === 'guest_pass').length;
+
+    document.getElementById('stat-today').textContent     = contacts.length;
+    document.getElementById('stat-checkedin').textContent = checkedIn;
+    document.getElementById('stat-pending').textContent   = contacts.length - checkedIn;
+    document.getElementById('stat-guests').textContent    = guests;
+
+    const recent = contacts.slice(0, 5);
+    document.getElementById('dash-recent').innerHTML = recent.length
+      ? recent.map(c => {
+          const name     = `${c.firstName||''} ${c.lastName||''}`.trim() || 'Unknown';
+          const facility = cf(c, 'facility') || '—';
+          const time     = cf(c, 'slot_time') || '—';
+          return `<div class="bk-row" style="cursor:default">
+            <div class="bk-ico">🏟️</div>
+            <div class="bk-inf"><div class="bk-t">${name}</div><div class="bk-m">${facility} · ${time}</div></div>
+            <div class="bk-r"><span class="badge ${cf(c,'checked_in')==='true'?'bg':'by'}">${cf(c,'checked_in')==='true'?'Checked In':'Pending'}</span></div>
+          </div>`;
+        }).join('')
+      : '<div style="padding:32px;text-align:center;color:var(--muted)">No bookings today.</div>';
+  } catch { /* non-fatal */ }
+}
+
+// ── Navigation ─────────────────────────────────────────────────────────────
+const TITLES = {
+  dashboard: "Dashboard",
+  bookings:  "Today's Bookings",
+  members:   "Member Search",
+  checkin:   "Quick Check-in",
+  tickets:   "Tickets",
+};
+
+window.navigate = (id) => {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sb-lnk').forEach(l => l.classList.remove('active'));
+  const screen = document.getElementById(`screen-${id}`);
+  const nav    = document.getElementById(`nav-${id}`);
+  if (screen) screen.classList.add('active');
+  if (nav)    nav.classList.add('active');
+  document.getElementById('tb-title').textContent = TITLES[id] || id;
+  closeSidebar();
+
+  if (id === 'bookings') {
+    screen.innerHTML = renderBookingsTodayScreen();
+    loadTodayBookings(window.__apiPwd || '');
+  } else if (id === 'members') {
+    screen.innerHTML = renderMemberSearchScreen();
+    bindMemberSearch();
+  } else if (id === 'tickets' && SESSION) {
+    screen.innerHTML = renderTicketsScreen();
+    bindTickets(SESSION.name || 'Staff');
+  } else if (id === 'checkin') {
+    bindQuickCheckin();
+  } else if (id === 'dashboard') {
+    loadDashboard();
+  }
+};
+
+function bindQuickCheckin() {
+  window.quickCheckin = async () => {
+    const q   = document.getElementById('checkin-input')?.value?.trim();
+    const res = document.getElementById('checkin-result');
+    if (!q || !res) return;
+
+    res.innerHTML = '<div style="color:var(--muted)">Looking up…</div>';
+    try {
+      const r    = await fetch(`/api/lookup-member?query=${encodeURIComponent(q)}`);
+      const data = await r.json();
+      if (!data.success) throw new Error(data.error);
+      const m = data.member;
+      res.innerHTML = `
+        <div class="info-card">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+            <div style="width:48px;height:48px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:'Playfair Display',serif;font-size:18px;font-weight:700">${(m.firstName||'?')[0]}${(m.lastName||'')[0]||''}</div>
+            <div><div style="font-size:16px;font-weight:600;color:var(--navy)">${m.name}</div><div style="font-size:12px;color:var(--muted)">${m.membershipNumber} · ${m.tier}</div></div>
+          </div>
+          <button class="btn btn-g" onclick="confirmCheckin('${m.id||''}')">✓ Confirm Check-in</button>
+        </div>`;
+
+      window.confirmCheckin = async (contactId) => {
+        if (!contactId) { alert('No GHL contact ID available for this member.'); return; }
+        const r2 = await fetch('/api/checkin', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ contactId, checkedIn: true }),
+        });
+        if (r2.ok) {
+          res.innerHTML = '<div class="alert-strip">✓ Member checked in successfully.</div>';
+          document.getElementById('checkin-input').value = '';
+        }
+      };
+    } catch (e) {
+      res.innerHTML = `<div style="color:var(--danger)">${e.message}</div>`;
+    }
+  };
+}
+
+// ── Sidebar ────────────────────────────────────────────────────────────────
+window.openSidebar  = () => { document.getElementById('sidebar').classList.add('open'); document.getElementById('sb-overlay').classList.add('open'); };
+window.closeSidebar = () => { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sb-overlay').classList.remove('open'); };
+
+// ── Session check on load ──────────────────────────────────────────────────
+(async () => {
+  try {
+    const res  = await fetch('/api/validate-session', { credentials: 'include' });
+    const data = await res.json();
+    if (data.valid && (data.role === 'staff' || data.role === 'management')) {
+      if (data.role === 'management') { window.location.replace('/management'); return; }
+      SESSION = { name: data.name || data.staffId, role: data.role };
+      showPortal(SESSION);
+    }
+  } catch { /* not logged in */ }
+})();
+</script>
+</body>
+</html>
